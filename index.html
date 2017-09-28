@@ -187,12 +187,10 @@
 <h4 id="4-关于点击穿透事件"><a href="#4-关于点击穿透事件" class="headerlink" title="4.关于点击穿透事件"></a>4.关于点击穿透事件</h4><p>视频中也有提到几种点击穿透事件的解决办法，在本项目中使用的是fastclick.js<br>免佣租房搜索房源的时候，点击或者更准确点说触摸到遮罩层或者选项就应该把整个遮罩层和选项区域收起。<br>在一开始实现该功能的时候，我设置的是一touchstart就收起，这样一来就出现了看似点击穿透的bug。但其实此处已经引入了fastclick.js，不是点击穿透，而是一toucustart便收起了整块选择区和遮罩层，导致在touchmove的过程中点击到后面的房源，直接跳转到房源详情页面。<br>解决办法：把touchstart改成touchmove</p>
 <h4 id="5-关于安卓手机软键盘收起的问题"><a href="#5-关于安卓手机软键盘收起的问题" class="headerlink" title="5.关于安卓手机软键盘收起的问题"></a>5.关于安卓手机软键盘收起的问题</h4><p>当我们在搜索框输入内容点击软键盘的“开始”进行搜索时，发现软键盘并不会自动收起。<br>原因暂时未知（网上查了很多版本，看着都不是很正确，自己也不知道是什么原因）<br>解决办法：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">document</span>.activeElement.blur();</div><div class="line">searchInput.blur();<span class="comment">//给input设置blur</span></div></pre></td></tr></table></figure></p>
 <h4 id="6-关于去掉IOS移动端alert-confirm提示信息出现的网址"><a href="#6-关于去掉IOS移动端alert-confirm提示信息出现的网址" class="headerlink" title="6.关于去掉IOS移动端alert/confirm提示信息出现的网址"></a>6.关于去掉IOS移动端alert/confirm提示信息出现的网址</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * 重写alert</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="built_in">window</span>.alert = <span class="function"><span class="keyword">function</span>(<span class="params">name</span>)</span>&#123;</div><div class="line">  </div><div class="line">    <span class="keyword">var</span> iframe = <span class="built_in">document</span>.createElement(<span class="string">"IFRAME"</span>);</div><div class="line">  </div><div class="line">    iframe.style.display=<span class="string">"none"</span>;</div><div class="line">  </div><div class="line">    iframe.setAttribute(<span class="string">"src"</span>, <span class="string">'data:text/plain,'</span>);</div><div class="line">  </div><div class="line">    <span class="built_in">document</span>.documentElement.appendChild(iframe);</div><div class="line">  </div><div class="line">    <span class="built_in">window</span>.frames[<span class="number">0</span>].window.alert(name);</div><div class="line">  </div><div class="line">    iframe.parentNode.removeChild(iframe);</div><div class="line"> </div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment"> * 重写confirm</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="built_in">window</span>.confirm = <span class="function"><span class="keyword">function</span>(<span class="params">message</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> iframe = <span class="built_in">document</span>.createElement(<span class="string">'IFRAME'</span>);</div><div class="line">    iframe.style.display = <span class="string">'none'</span>;</div><div class="line">    iframe.setAttribute(<span class="string">'src'</span>,<span class="string">'data:text/plain,'</span>);</div><div class="line">    <span class="built_in">document</span>.documentElement.appendChild(iframe);</div><div class="line">    <span class="keyword">var</span> alertFrame = <span class="built_in">window</span>.frames[<span class="number">0</span>];</div><div class="line">    <span class="keyword">var</span> result = alertFrame.window.confirm(message);</div><div class="line">    iframe.parentNode.removeChild(iframe);</div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="7-关于三大系统的字体设置问题"><a href="#7-关于三大系统的字体设置问题" class="headerlink" title="7.关于三大系统的字体设置问题"></a>7.关于三大系统的字体设置问题</h4><p>参考自：<a href="http://www.cnblogs.com/PeunZhang/p/3592096.html" target="_blank" rel="external">移动web页面使用字体的思考-白树-博客园</a><br><code>*</code>各个手机系统有自己的默认字体，且都不支持微软雅黑<br><code>*</code>如无特殊需求，手机端无需定义中文字体，使用系统默认<br><code>*</code>英文字体和数字字体可使用Helvetica，三种系统都支持<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">body</span> &#123;</div><div class="line">    <span class="attribute">font-family</span>:Helvetica;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="7-关于三大系统的字体设置问题"><a href="#7-关于三大系统的字体设置问题" class="headerlink" title="7.关于三大系统的字体设置问题"></a>7.关于三大系统的字体设置问题</h4><p>参考自：<a href="http://www.cnblogs.com/PeunZhang/p/3592096.html" target="_blank" rel="external">移动web页面使用字体的思考-白树-博客园</a><br><code>+</code>各个手机系统有自己的默认字体，且都不支持微软雅黑<br><code>+</code>如无特殊需求，手机端无需定义中文字体，使用系统默认<br><code>+</code>英文字体和数字字体可使用Helvetica，三种系统都支持<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">body</span> &#123;</div><div class="line">    <span class="attribute">font-family</span>:Helvetica;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <h4 id="8-关于部分页面设置了width-100-仍能左右滑动的问题"><a href="#8-关于部分页面设置了width-100-仍能左右滑动的问题" class="headerlink" title="8.关于部分页面设置了width:100%仍能左右滑动的问题"></a>8.关于部分页面设置了width:100%仍能左右滑动的问题</h4><p>这个bug纯属粗心了，此处是因为给input加了一个margin-left，而宽度又设置了100%，只需要把width:100%去掉即可。</p>
 <h3 id="三、关于调试"><a href="#三、关于调试" class="headerlink" title="三、关于调试"></a>三、关于调试</h3><p>前期谷歌浏览器检查工具<br>后期各种手机测试<br>如果有开发者权限的话可以用微信开发工具进行调试</p>
-<h3 id="四、可复用代码的整理（后期单独整理出来）"><a href="#四、可复用代码的整理（后期单独整理出来）" class="headerlink" title="四、可复用代码的整理（后期单独整理出来）"></a>四、可复用代码的整理（后期单独整理出来）</h3><p><code>*</code>不同手机显示屏比例问题<br><code>*</code>手势轮播图<br><code>*</code>表单校验</p>
-<ul><br>    <li>不同手机显示屏比例问题</li><br>    <li>手势轮播图</li><br>    <li>表单校验</li><br></ul>
-
+<h3 id="四、可复用代码的整理（后期单独整理出来）"><a href="#四、可复用代码的整理（后期单独整理出来）" class="headerlink" title="四、可复用代码的整理（后期单独整理出来）"></a>四、可复用代码的整理（后期单独整理出来）</h3><p><code>+</code>不同手机显示屏比例问题<br><code>+</code>手势轮播图<br><code>+</code>表单校验</p>
 <h3 id="五、需要改进的地方"><a href="#五、需要改进的地方" class="headerlink" title="五、需要改进的地方"></a>五、需要改进的地方</h3><p>1.此次校验全部由后台完成，因需要填写的表单较少，故没有太大影响，但还是由前端校验好一些<br>2.关于js这块，后续可以考虑使用Zepto.js<br>3.各种优化</p>
 
       
@@ -229,139 +227,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2017/09/28/中升物业总结-一-移动端/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-goodDay" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/13/goodDay/">goodDay</a>
-    </h1>
-  
-
-        
-        <a href="/2017/08/13/goodDay/" class="archive-article-date">
-  	<time datetime="2017-08-13T08:09:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-13</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/08/13/goodDay/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/13/hello-world/">Hello World</a>
-    </h1>
-  
-
-        
-        <a href="/2017/08/13/hello-world/" class="archive-article-date">
-  	<time datetime="2017-08-13T07:29:54.247Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-13</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/08/13/hello-world/">展开全文 >></a>
         </p>
       
 
