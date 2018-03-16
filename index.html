@@ -149,6 +149,87 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-2018-3-15腾讯前端又一面总结" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/03/16/2018-3-15腾讯前端又一面总结/">2018-3-15腾讯前端又一面总结</a>
+    </h1>
+  
+
+        
+        <a href="/2018/03/16/2018-3-15腾讯前端又一面总结/" class="archive-article-date">
+  	<time datetime="2018-03-16T13:15:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-16</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>lz在14号面了腾讯一面以后感觉已经GG了，没想到在15号突然接到了腾讯的电话。感觉是14号跪了然后又被捞了。也是简单的自我介绍以后进入主题，不过和前一个面试不同的是，前一个面试主要都是在讲项目，这次的面试问的基础问题比较多。</p>
+<blockquote>
+<p>1.怎么学习前端的</p>
+</blockquote>
+<p>w3school –&gt; 慕课 –&gt; 红宝书等 –&gt; 做项目</p>
+<blockquote>
+<p>2.子元素垂直居中父元素的实现方法</p>
+</blockquote>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">春招</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/03/16/2018-3-15腾讯前端又一面总结/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-2018-3-14腾讯前端一面总结" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -194,7 +275,7 @@
 </blockquote>
 <p>用懒加载是因为项目的图片实在是太多了，影响加载效果。lz当时回答没有具体的数据可以说明达到什么效果，但是在没有懒加载之前，我们一点进去页面就会看到整个页面加载很慢，图片需要一段时间才加载出来，页面会很卡，加了懒加载以后至少肉眼看不出以上的缺点。（要是有一些数据可以说明问题就好了）</p>
 <blockquote>
-<p>5.在项目中得到了什么提升</p>
+<p>5.项目中的不足、在项目中得到了什么提升</p>
 </blockquote>
 <p>lz怎么回答并不重要，这里就不写了。</p>
 <blockquote>
@@ -220,6 +301,15 @@
 </blockquote>
 <p>方法：<a href="https://baike.baidu.com/item/%E8%BE%97%E8%BD%AC%E7%9B%B8%E9%99%A4%E6%B3%95/4625352?fr=aladdin" target="_blank" rel="external">辗转相除法</a><br>基本原理：两个数的最大公约数是指能同时整除它们的最大正整数<br><img src="img/t3.png" alt="principle"><br>例子：<br><img src="img/t1.png" alt="demo"><br>证明：<br><img src="img/t2.png" alt="prove"></p>
 <p>js实现：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">gcd</span>(<span class="params">a,b</span>) </span>&#123;</div><div class="line">	<span class="keyword">if</span> (a &lt;= <span class="number">0</span> ||b &lt;= <span class="number">0</span>) &#123;</div><div class="line">		<span class="keyword">return</span> <span class="string">'请输入正整数'</span>;</div><div class="line">	&#125; <span class="keyword">else</span> &#123;</div><div class="line">		<span class="keyword">if</span> (a &lt; b) &#123;</div><div class="line">			[a,b] = [b,a];</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">const</span> r = a % b;</div><div class="line">		<span class="keyword">if</span> (r) &#123;</div><div class="line">			a = b;</div><div class="line">			b = r;</div><div class="line">			gcd(a,b); </div><div class="line">		&#125; <span class="keyword">else</span> &#123;</div><div class="line">			<span class="keyword">return</span> b;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>13.git rebase和git merge的区别</p>
+</blockquote>
+<p><a href="http://blog.csdn.net/wh_19910525/article/details/7554489" target="_blank" rel="external">git merge 和 git rebase 小结</a><br><a href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000" target="_blank" rel="external">廖雪峰Git教程</a></p>
+<blockquote>
+<p>14.学习建议：</p>
+</blockquote>
+<p>1.巩固基础知识<br>2.CSS3<br>3.算法<br>4.数据结构<br>5.网络安全</p>
+<p>面试官很nice，渣渣仍需努力！</p>
 
       
 
