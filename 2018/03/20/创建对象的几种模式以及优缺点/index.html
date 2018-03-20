@@ -6,18 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://Hinsurance.github.io">
-  <title>Archives | Hinsurance</title>
+  <title>创建对象的几种模式以及优缺点 | Hinsurance</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="咸鱼总有翻身时">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Hinsurance">
-<meta property="og:url" content="http://Hinsurance.github.io/archives/index.html">
+  <meta name="description" content="一、使用Object构造函数或对象字面量1234567891011121314151617181920//Object构造函数var person = new Object();person.name = &quot;hbx&quot;;person.age = 22;person.job = &quot;student&quot;;person.sayName = function() &amp;#123;    console.log(th">
+<meta name="keywords" content="js 创建对象">
+<meta property="og:type" content="article">
+<meta property="og:title" content="创建对象的几种模式以及优缺点">
+<meta property="og:url" content="http://Hinsurance.github.io/2018/03/20/创建对象的几种模式以及优缺点/index.html">
 <meta property="og:site_name" content="Hinsurance">
-<meta property="og:description" content="咸鱼总有翻身时">
+<meta property="og:description" content="一、使用Object构造函数或对象字面量1234567891011121314151617181920//Object构造函数var person = new Object();person.name = &quot;hbx&quot;;person.age = 22;person.job = &quot;student&quot;;person.sayName = function() &amp;#123;    console.log(th">
 <meta property="og:locale" content="zh">
+<meta property="og:image" content="http://hinsurance.github.io/2018/03/20/创建对象的几种模式以及优缺点/img/prototype.jpg">
+<meta property="og:updated_time" content="2018-03-20T14:52:06.422Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hinsurance">
-<meta name="twitter:description" content="咸鱼总有翻身时">
+<meta name="twitter:title" content="创建对象的几种模式以及优缺点">
+<meta name="twitter:description" content="一、使用Object构造函数或对象字面量1234567891011121314151617181920//Object构造函数var person = new Object();person.name = &quot;hbx&quot;;person.age = 22;person.job = &quot;student&quot;;person.sayName = function() &amp;#123;    console.log(th">
+<meta name="twitter:image" content="http://hinsurance.github.io/2018/03/20/创建对象的几种模式以及优缺点/img/prototype.jpg">
   
     <link rel="alternative" href="/atom.xml" title="Hinsurance" type="application/atom+xml">
   
@@ -147,36 +151,62 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-创建对象的几种模式以及优缺点" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/03/20/创建对象的几种模式以及优缺点/" class="archive-article-date">
-  	<time datetime="2018-03-20T08:25:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-20</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/20/创建对象的几种模式以及优缺点/">创建对象的几种模式以及优缺点</a>
+    <h1 class="article-title" itemprop="name">
+      创建对象的几种模式以及优缺点
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2018/03/20/创建对象的几种模式以及优缺点/" class="archive-article-date">
+  	<time datetime="2018-03-20T08:25:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-20</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>一、使用Object构造函数或对象字面量<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//Object构造函数</span></div><div class="line"><span class="keyword">var</span> person = <span class="keyword">new</span> <span class="built_in">Object</span>();</div><div class="line">person.name = <span class="string">"hbx"</span>;</div><div class="line">person.age = <span class="number">22</span>;</div><div class="line">person.job = <span class="string">"student"</span>;</div><div class="line"></div><div class="line">person.sayName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">//对象字面量</span></div><div class="line"><span class="keyword">var</span> person = &#123;</div><div class="line">    name: <span class="string">"hbx"</span>,</div><div class="line">    age: <span class="number">22</span>,</div><div class="line">    job: <span class="string">"student"</span>,</div><div class="line"></div><div class="line">    sayName: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>缺点：使用同一接口创建很多对象，产生大量的重复代码。</p>
+<p>二、工厂模式<br>用函数来封装以特定接口创建对象的细节<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">createPerson</span>(<span class="params">name,age,job</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> o = <span class="keyword">new</span> <span class="built_in">Object</span>();</div><div class="line">    o.name = name;</div><div class="line">    o.age = age;</div><div class="line">    o.job = job;</div><div class="line">    o.sayName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</div><div class="line">    &#125;;</div><div class="line">    <span class="keyword">return</span> o;</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> person1 = createPerson(<span class="string">"Nicholas"</span>,<span class="number">29</span>,<span class="string">"Software Engineer"</span>);</div><div class="line"><span class="keyword">var</span> person2 = createPerson(<span class="string">"Greg"</span>,<span class="number">27</span>,<span class="string">"Doctor"</span>);</div></pre></td></tr></table></figure></p>
+<p>优点：解决了创建多个相似对象的问题<br>缺点：没有解决对象识别的问题（即怎样知道一个对象的类型，当前都是Object类型）</p>
+<p>三、构造函数模式<br>创建自定义构造函数，从而定义自定义对象类型的属性和方法<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//构造函数首字母大写</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name,age,job</span>) </span>&#123;</div><div class="line">    <span class="keyword">this</span>.name = name;</div><div class="line">    <span class="keyword">this</span>.age = age;</div><div class="line">    <span class="keyword">this</span>.job = job;</div><div class="line"></div><div class="line">    <span class="comment">//1.每个方法都会在每个实例上重新创建一遍，没必要</span></div><div class="line">    <span class="comment">// this.sayName = function() &#123;</span></div><div class="line">    <span class="comment">//     console.log(this.name);</span></div><div class="line">    <span class="comment">// &#125;;</span></div><div class="line"></div><div class="line">    <span class="keyword">this</span>.sayName = sayName;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//2.此处解决了两个函数做同一件事的问题</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">sayName</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//使用new操作符！</span></div><div class="line"><span class="keyword">var</span> person1 = <span class="keyword">new</span> Person(<span class="string">"Nicholas"</span>,<span class="number">29</span>,<span class="string">"Software Engineer"</span>);</div><div class="line"><span class="keyword">var</span> person2 = <span class="keyword">new</span> Person(<span class="string">"Greg"</span>,<span class="number">27</span>,<span class="string">"Doctor"</span>);</div><div class="line"></div><div class="line"><span class="comment">//实例有一个constructor属性指向Person</span></div><div class="line"><span class="built_in">console</span>.log(person1.constructor == Person); <span class="comment">//true</span></div><div class="line"><span class="built_in">console</span>.log(person2.constructor == Person); <span class="comment">//true</span></div><div class="line"></div><div class="line"><span class="comment">//instanceof操作符检测对象类型</span></div><div class="line"><span class="built_in">console</span>.log(person1 <span class="keyword">instanceof</span> <span class="built_in">Object</span>); <span class="comment">//true</span></div><div class="line"><span class="built_in">console</span>.log(person1 <span class="keyword">instanceof</span> Person); <span class="comment">//true</span></div><div class="line"><span class="built_in">console</span>.log(person2 <span class="keyword">instanceof</span> <span class="built_in">Object</span>); <span class="comment">//true</span></div><div class="line"><span class="built_in">console</span>.log(person2 <span class="keyword">instanceof</span> Person); <span class="comment">//true</span></div></pre></td></tr></table></figure></p>
+<p>优点：相较于工厂模式，可以将实例标识为一种特定的类型 (Person)<br>缺点：1.每个方法都要在每个实例上重新创建一遍<br>      2.sayName函数只是被某些对象调用，却写在全局作用域中</p>
+<p> 四、原型模式<br> <figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params"></span>) </span>&#123;&#125;</div><div class="line"></div><div class="line"><span class="comment">//重写对象原型</span></div><div class="line">Person.prototype = &#123; </div><div class="line">    <span class="keyword">constructor</span>: Person,//因为重写了对象原型，<span class="keyword">constructor</span>指向Object而不是Person，故重新设置回来</div><div class="line">    name: "Nicholas",</div><div class="line">    age: 29,</div><div class="line">    job: "Software Engineer",</div><div class="line">    friends: ["Shelby","Court"],</div><div class="line">    sayName: function() &#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</div><div class="line">    &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">var</span> person1 = <span class="keyword">new</span> Person();</div><div class="line"><span class="keyword">var</span> person2 = <span class="keyword">new</span> Person();</div><div class="line"></div><div class="line">person1.friends.push(<span class="string">"Van"</span>);</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(person1.friends); <span class="comment">//"Shelby,Court,Van"</span></div><div class="line"><span class="built_in">console</span>.log(person1.friends); <span class="comment">//"Shelby,Court,Van"</span></div><div class="line"><span class="built_in">console</span>.log(person1.friends === person2.friends); <span class="comment">//true</span></div></pre></td></tr></table></figure></p>
+<p> 优点：可以让所有实例共享原型的属性和方法<br> 缺点：若包含引用类型的属性(friends),当在person1中修改friends时在person2中也有所体现</p>
+<p> 原型链：红宝书P148 图6-1<br> <img src="img/prototype.jpg" alt="prototype"></p>
+<p> 五、组合使用构造函数模式和原型模式<br> 构造函数模式用于定义实例属性，原型模式用于定义共享的属性和方法。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name,age,job</span>) </span>&#123;</div><div class="line">    <span class="keyword">this</span>.name = name;</div><div class="line">    <span class="keyword">this</span>.age = age;</div><div class="line">    <span class="keyword">this</span>.job = job;</div><div class="line">    <span class="keyword">this</span>.friends = [<span class="string">"Shelby"</span>,<span class="string">"Court"</span>];</div><div class="line">&#125;</div><div class="line"></div><div class="line">Person.prototype = &#123;</div><div class="line">    <span class="keyword">constructor</span>: Person,</div><div class="line">    sayName: function() &#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> person1 = <span class="keyword">new</span> Person(<span class="string">"Nicholas"</span>,<span class="number">29</span>,<span class="string">"Software Engineer"</span>);</div><div class="line"><span class="keyword">var</span> person2 = <span class="keyword">new</span> Person(<span class="string">"Greg"</span>,<span class="number">27</span>,<span class="string">"Doctor"</span>);</div><div class="line"></div><div class="line">person1.friends.push(<span class="string">"Van"</span>);</div><div class="line"><span class="built_in">console</span>.log(person1.friends); <span class="comment">//"Shelby,Court,Van"</span></div><div class="line"><span class="built_in">console</span>.log(person2.friends); <span class="comment">//"Shelby,Court"</span></div><div class="line"><span class="built_in">console</span>.log(person1.friends === person2.friends); <span class="comment">//false</span></div><div class="line"><span class="built_in">console</span>.log(person1.sayName === person2.sayName); <span class="comment">//true</span></div></pre></td></tr></table></figure></p>
+<p>该种模式是目前在ECMAScript中使用最广泛、认同度最高的一种创建自定义类型的方法。</p>
+<p>六、动态原型模型<br>通过检查某个应该存在的方法是否有效，来决定是都需要初始化原型。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name,age,job</span>) </span>&#123;</div><div class="line">    <span class="comment">//属性</span></div><div class="line">    <span class="keyword">this</span>.name = name;</div><div class="line">    <span class="keyword">this</span>.age = age;</div><div class="line">    <span class="keyword">this</span>.job = job;</div><div class="line">    <span class="comment">//方法</span></div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="keyword">this</span>.sayName != <span class="string">"function"</span>) &#123;</div><div class="line">        <span class="comment">//注：此处不能使用对象字面量重写原型。如果在已经创建了实例的情况下重写原型，现有实例与新原型之间的联系会被切断</span></div><div class="line">        Person.prototype.sayName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">            <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> friend = <span class="keyword">new</span> Person(<span class="string">"Nicholas"</span>,<span class="number">29</span>,<span class="string">"Software Engineer"</span>);</div><div class="line">friend.sayName();</div></pre></td></tr></table></figure></p>
+<p>优点：if语句检查的可以是初始化之后应该存在的任何属性或方法，不必用一大堆if语句检查每个属性和每个方法。</p>
+<p>七、寄生构造函数模式<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name,age,job</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> o = <span class="keyword">new</span> <span class="built_in">Object</span>();</div><div class="line">    o.name = name;</div><div class="line">    o.age = age;</div><div class="line">    o.job = job;</div><div class="line">    o.sayName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</div><div class="line">    &#125;;</div><div class="line">    <span class="keyword">return</span> o;</div><div class="line">&#125;</div><div class="line"><span class="comment">//除了使用new，其他与工厂模式一模一样</span></div><div class="line"><span class="keyword">var</span> friend = <span class="keyword">new</span> Person(<span class="string">"Nicholas"</span>,<span class="number">29</span>,<span class="string">"Software Engineer"</span>);</div><div class="line">friend.sayName(); <span class="comment">//"Nicholas"</span></div></pre></td></tr></table></figure></p>
+<p>返回的对象与构造函数或者构造函数的原型属性之间没有关系，构造函数返回的对象与在构造函数外部创建的对象没有什么不同。<br>不能依赖instanceof操作符来确定对象类型。</p>
+<p>八、稳妥构造函数模式<br>稳妥对象：指没有公共属性，而且其方法也不引用this的对象。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name,age,job</span>) </span>&#123;</div><div class="line">    <span class="comment">//创建要返回的对象</span></div><div class="line">    <span class="keyword">var</span> o = <span class="keyword">new</span> <span class="built_in">Object</span>();</div><div class="line">    <span class="comment">//可以在这里定义私有变量和函数</span></div><div class="line"></div><div class="line">    <span class="comment">//添加方法</span></div><div class="line">    o.sayName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="built_in">console</span>.log(name);</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    <span class="comment">//返回对象</span></div><div class="line">    <span class="keyword">return</span> o;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> friend = Person(<span class="string">"Nicholas"</span>,<span class="number">29</span>,<span class="string">"Software Engineer"</span>);</div><div class="line">friend.sayName(); <span class="comment">//"Nicholas"</span></div></pre></td></tr></table></figure></p>
+<p>优点：安全，除了使用sayName方法之外，没有其他办法访问name的值。</p>
+<p>九、检测对象关系的相关方法</p>
+<ol>
+<li><p>isPrototypeOf()方法：<br>console.log(Person.prototype.isPrototypeOf(person1)); //true</p>
+</li>
+<li><p>Object.getPrototypeOf()方法：<br>console.log(Object.getPrototypeOf(person1) == Person.prototype); //true<br>console.log(Object.getPrototypeOf(person1).name); //“Nicholas”</p>
+</li>
+<li><p>hasOwnProperty()方法：检测一个属性是存在于实例中，还是存在于原型中。<br>console.log(person1.hasOwnProperty(“name”)); //false</p>
+</li>
+<li><p>确定属性是在对象中，还是在原型中<br>function hasPrototypeProperty(object,name) {<br> return !object.hasOwnProperty(name) &amp;&amp; (name in object);<br>}</p>
+</li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -188,364 +218,105 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://Hinsurance.github.io/2018/03/20/创建对象的几种模式以及优缺点/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/03/20/理解js对象/" class="archive-article-date">
-  	<time datetime="2018-03-20T07:24:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-20</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2018/03/20/理解js对象/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">理解js对象</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/20/理解js对象/">理解js对象</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">js 对象</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/03/18/map-reduce/" class="archive-article-date">
-  	<time datetime="2018-03-18T02:41:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-18</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/18/map-reduce/">map/reduce</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">js 高阶函数</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/03/17/js数据类型和运算符/" class="archive-article-date">
-  	<time datetime="2018-03-17T14:16:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-17</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/17/js数据类型和运算符/">js数据类型和运算符</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">js</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/03/17/美团一面-xd/" class="archive-article-date">
-  	<time datetime="2018-03-17T12:10:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-17</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/17/美团一面-xd/">美团一面(xd)</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">春招</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/03/17/美团一面-sx/" class="archive-article-date">
-  	<time datetime="2018-03-17T12:06:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-17</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/17/美团一面-sx/">美团一面(sx)</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">春招</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/03/17/腾讯一面-xw/" class="archive-article-date">
-  	<time datetime="2018-03-17T12:00:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-17</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/17/腾讯一面-xw/">腾讯一面(xw)</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">春招</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/03/17/腾讯一面-dh/" class="archive-article-date">
-  	<time datetime="2018-03-17T11:49:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-17</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/17/腾讯一面-dh/">腾讯一面(dh)</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">春招</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/03/17/美团一面-dh/" class="archive-article-date">
-  	<time datetime="2018-03-17T11:39:29.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-17</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/17/美团一面-dh/">美团点评一面(dh)</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">春招</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/03/17/深信服某产品线2-dh/" class="archive-article-date">
-  	<time datetime="2018-03-17T11:34:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-17</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/17/深信服某产品线2-dh/">深信服某产品线2(dh)</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">春招</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="extend next" rel="next" href="/archives/page/2/">Next &raquo;</a>
-    </nav>
   
 
 
@@ -569,8 +340,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

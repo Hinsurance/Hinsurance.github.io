@@ -6,18 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://Hinsurance.github.io">
-  <title>Archives | Hinsurance</title>
+  <title>理解js对象 | Hinsurance</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="咸鱼总有翻身时">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Hinsurance">
-<meta property="og:url" content="http://Hinsurance.github.io/archives/index.html">
+  <meta name="description" content="一直觉得js中的对象、原型和继承很难理解清楚，看了几遍红宝书和一些博客，总是似懂非懂的感觉，没办法形成自己的一套理解，于是乎写写博客整理一下思路。 一、对象关于对象，lz本人比较简答粗暴的理解如下：对象是对现实世界事物的抽象，对象的属性是事物的特性描述，而对象的方法是事物行为的描述。比如：123456cat &amp;#123;    name: &quot;狸花猫&quot;,    eat: function() &amp;#1">
+<meta name="keywords" content="js 对象">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解js对象">
+<meta property="og:url" content="http://Hinsurance.github.io/2018/03/20/理解js对象/index.html">
 <meta property="og:site_name" content="Hinsurance">
-<meta property="og:description" content="咸鱼总有翻身时">
+<meta property="og:description" content="一直觉得js中的对象、原型和继承很难理解清楚，看了几遍红宝书和一些博客，总是似懂非懂的感觉，没办法形成自己的一套理解，于是乎写写博客整理一下思路。 一、对象关于对象，lz本人比较简答粗暴的理解如下：对象是对现实世界事物的抽象，对象的属性是事物的特性描述，而对象的方法是事物行为的描述。比如：123456cat &amp;#123;    name: &quot;狸花猫&quot;,    eat: function() &amp;#1">
 <meta property="og:locale" content="zh">
+<meta property="og:updated_time" content="2018-03-20T08:28:41.557Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hinsurance">
-<meta name="twitter:description" content="咸鱼总有翻身时">
+<meta name="twitter:title" content="理解js对象">
+<meta name="twitter:description" content="一直觉得js中的对象、原型和继承很难理解清楚，看了几遍红宝书和一些博客，总是似懂非懂的感觉，没办法形成自己的一套理解，于是乎写写博客整理一下思路。 一、对象关于对象，lz本人比较简答粗暴的理解如下：对象是对现实世界事物的抽象，对象的属性是事物的特性描述，而对象的方法是事物行为的描述。比如：123456cat &amp;#123;    name: &quot;狸花猫&quot;,    eat: function() &amp;#1">
   
     <link rel="alternative" href="/atom.xml" title="Hinsurance" type="application/atom+xml">
   
@@ -147,74 +149,44 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-理解js对象" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/03/20/创建对象的几种模式以及优缺点/" class="archive-article-date">
-  	<time datetime="2018-03-20T08:25:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-20</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/20/创建对象的几种模式以及优缺点/">创建对象的几种模式以及优缺点</a>
+    <h1 class="article-title" itemprop="name">
+      理解js对象
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">js 创建对象</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/03/20/理解js对象/" class="archive-article-date">
+        
+        <a href="/2018/03/20/理解js对象/" class="archive-article-date">
   	<time datetime="2018-03-20T07:24:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-20</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/20/理解js对象/">理解js对象</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>一直觉得js中的对象、原型和继承很难理解清楚，看了几遍红宝书和一些博客，总是似懂非懂的感觉，没办法形成自己的一套理解，于是乎写写博客整理一下思路。</p>
+<h3 id="一、对象"><a href="#一、对象" class="headerlink" title="一、对象"></a>一、对象</h3><p>关于对象，lz本人比较简答粗暴的理解如下：<br>对象是对现实世界事物的抽象，对象的属性是事物的特性描述，而对象的方法是事物行为的描述。<br>比如：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">cat &#123;</div><div class="line">    name: <span class="string">"狸花猫"</span>,</div><div class="line">    eat: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">"吃猫粮"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="二、属性类型（描述属性的特征）"><a href="#二、属性类型（描述属性的特征）" class="headerlink" title="二、属性类型（描述属性的特征）"></a>二、属性类型（描述属性的特征）</h3><h4 id="1-数据属性"><a href="#1-数据属性" class="headerlink" title="1. 数据属性"></a>1. 数据属性</h4><table><tr><td>特性</td><td>描述</td></tr><tr><td>[[Configurable]]</td><td>能否通过delete删除属性从而重新定义属性，能否修改属性的特性，能否把属性修改为访问器属性</td></tr><tr><td>[[Enumberable]]</td><td>能否通过for-in循环返回属性</td></tr><tr><td>[[Writable]]</td><td>能否修改属性的值</td></tr><tr><td>[[Value]]</td><td>包含这个属性的数据值</td></tr></table>
 
-        <div class="article-info info-on-right">
-          
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> person = &#123;&#125;;</div><div class="line"><span class="comment">//使用Object.defineProperty()方法修改属性默认的特性</span></div><div class="line"><span class="built_in">Object</span>.defineProperty(person,<span class="string">"name"</span>,&#123;</div><div class="line">    configurable: <span class="literal">false</span>, <span class="comment">//定义属性为不可配置</span></div><div class="line">    value: <span class="string">"Nicholas"</span> <span class="comment">//定义属性的值</span></div><div class="line">&#125;)</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(person.name); <span class="comment">//"Nicholas"</span></div><div class="line"><span class="keyword">delete</span> person.name;</div><div class="line"><span class="built_in">console</span>.log(person.name); <span class="comment">//"Nicholas"</span></div><div class="line"></div><div class="line"><span class="comment">//一旦定义configurable:false后不能再更改回来，修改writable之外的特性会导致错误</span></div><div class="line"><span class="comment">//抛出错误</span></div><div class="line"><span class="built_in">Object</span>.defineProperty(person,<span class="string">"name"</span>,&#123;</div><div class="line">    configurable: <span class="literal">true</span>,</div><div class="line">    value: <span class="string">"Nicholas"</span></div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>注：调用Object.defineProperty()时，如果不指定，configurable、enumerable、writable默认为false</p>
+<h4 id="2-访问器属性"><a href="#2-访问器属性" class="headerlink" title="2. 访问器属性"></a>2. 访问器属性</h4><table><tr><td>特性</td><td>描述</td></tr><tr><td>[[Configurable]]</td><td>能否通过delete删除属性从而重新定义属性，能否修改属性的特性，能否把属性修改为访问器属性</td></tr><tr><td>[[Enumberable]]</td><td>能否通过for-in循环返回属性</td></tr><tr><td>[[Get]]</td><td>在读取属性时调用的函数，默认为undefined</td></tr><tr><td>[[Set]]</td><td>在写入属性时调用的函数，默认为undefined</td></tr></table>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> book = &#123;</div><div class="line">    _year: <span class="number">2004</span>,<span class="comment">//数据属性，下划线用于表示只能通过对象方法访问的属性</span></div><div class="line">    edition: <span class="number">1</span></div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">//访问器属性必须用Object.defineProperty()定义</span></div><div class="line"><span class="built_in">Object</span>.defineProperty(book,<span class="string">"year"</span>,&#123;</div><div class="line">    get: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>._year;</div><div class="line">    &#125;,</div><div class="line">    set: <span class="function"><span class="keyword">function</span>(<span class="params">newValue</span>) </span>&#123;</div><div class="line">        <span class="keyword">if</span> (newValue &gt; <span class="number">2004</span>) &#123;</div><div class="line">            <span class="keyword">this</span>._year = newValue;</div><div class="line">            <span class="keyword">this</span>.edition += newValue - <span class="number">2004</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">book.year = <span class="number">2005</span>;</div><div class="line"><span class="built_in">console</span>.log(book.edition); <span class="comment">//2</span></div></pre></td></tr></table></figure>
+<h3 id="三、定义多个属性-Object-defineProperties-方法"><a href="#三、定义多个属性-Object-defineProperties-方法" class="headerlink" title="三、定义多个属性 (Object.defineProperties()方法)"></a>三、定义多个属性 (Object.defineProperties()方法)</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> book = &#123;&#125;;</div><div class="line"></div><div class="line"><span class="built_in">Object</span>.definePropertoes(book,&#123;</div><div class="line">    _year: &#123;</div><div class="line">        writable: <span class="literal">true</span>,</div><div class="line">        value: <span class="number">2004</span></div><div class="line">    &#125;,</div><div class="line"></div><div class="line">    edition: &#123;</div><div class="line">        writable: <span class="literal">true</span>,</div><div class="line">        value: <span class="number">1</span></div><div class="line">    &#125;,</div><div class="line"></div><div class="line">    year: &#123;</div><div class="line">        get: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">this</span>._year;</div><div class="line">        &#125;,</div><div class="line"></div><div class="line">        set: <span class="function"><span class="keyword">function</span>(<span class="params">newValue</span>) </span>&#123;</div><div class="line">            <span class="keyword">if</span> (newValue &gt; <span class="number">2004</span>) &#123;</div><div class="line">                <span class="keyword">this</span>._year = newValue;</div><div class="line">                <span class="keyword">this</span>.edition += newValue - <span class="number">2004</span>;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h3 id="四、读取属性的特性-Object-getOwnPropertyDescriptor-方法"><a href="#四、读取属性的特性-Object-getOwnPropertyDescriptor-方法" class="headerlink" title="四、读取属性的特性 (Object.getOwnPropertyDescriptor()方法)"></a>四、读取属性的特性 (Object.getOwnPropertyDescriptor()方法)</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//book对象代码如上所示</span></div><div class="line"><span class="keyword">var</span> descriptor = <span class="built_in">Object</span>.getOwnPropertyDescritor(book,<span class="string">"_year"</span>);</div><div class="line"><span class="built_in">console</span>.log(descriptor.value); <span class="comment">//2004</span></div><div class="line"><span class="built_in">console</span>.log(descriptor.configurable); <span class="comment">//false</span></div></pre></td></tr></table></figure>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -226,326 +198,114 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://Hinsurance.github.io/2018/03/20/理解js对象/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/03/18/map-reduce/" class="archive-article-date">
-  	<time datetime="2018-03-18T02:41:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-18</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2018/03/20/创建对象的几种模式以及优缺点/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          创建对象的几种模式以及优缺点
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/03/18/map-reduce/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">map/reduce</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/18/map-reduce/">map/reduce</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">js 高阶函数</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/03/17/js数据类型和运算符/" class="archive-article-date">
-  	<time datetime="2018-03-17T14:16:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-17</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/17/js数据类型和运算符/">js数据类型和运算符</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">js</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/03/17/美团一面-xd/" class="archive-article-date">
-  	<time datetime="2018-03-17T12:10:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-17</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/17/美团一面-xd/">美团一面(xd)</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">春招</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/03/17/美团一面-sx/" class="archive-article-date">
-  	<time datetime="2018-03-17T12:06:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-17</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/17/美团一面-sx/">美团一面(sx)</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">春招</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/03/17/腾讯一面-xw/" class="archive-article-date">
-  	<time datetime="2018-03-17T12:00:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-17</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/17/腾讯一面-xw/">腾讯一面(xw)</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">春招</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/03/17/腾讯一面-dh/" class="archive-article-date">
-  	<time datetime="2018-03-17T11:49:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-17</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/17/腾讯一面-dh/">腾讯一面(dh)</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">春招</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/03/17/美团一面-dh/" class="archive-article-date">
-  	<time datetime="2018-03-17T11:39:29.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-17</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/17/美团一面-dh/">美团点评一面(dh)</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">春招</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/03/17/深信服某产品线2-dh/" class="archive-article-date">
-  	<time datetime="2018-03-17T11:34:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-17</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/17/深信服某产品线2-dh/">深信服某产品线2(dh)</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">春招</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="extend next" rel="next" href="/archives/page/2/">Next &raquo;</a>
-    </nav>
   
 
 
@@ -569,8 +329,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
