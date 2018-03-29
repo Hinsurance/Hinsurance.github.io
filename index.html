@@ -149,6 +149,137 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-跨域的简易实现及测试" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/03/28/跨域的简易实现及测试/">浏览器的同源策略和跨域实现(一)</a>
+    </h1>
+  
+
+        
+        <a href="/2018/03/28/跨域的简易实现及测试/" class="archive-article-date">
+  	<time datetime="2018-03-28T06:59:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-28</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>由于在以往的项目开发过程中基本没遇到跨域问题，阿咸在跨域这一块知之甚少，所以决定动手模拟实现几种跨域的方法。<br>参考资料：<br><a href="http://www.ruanyifeng.com/blog/2016/04/same-origin-policy.html" target="_blank" rel="external">浏览器同源政策及其规避方法 阮一峰</a><br><a href="http://www.ruanyifeng.com/blog/2016/04/cors.html" target="_blank" rel="external">跨域资源共享 CORS 详解 阮一峰</a><br><a href="https://zhuanlan.zhihu.com/p/25778815" target="_blank" rel="external">关于跨域，你想知道的全在这里 <a href="https://www.zhihu.com/people/lindongzhou/activities" target="_blank" rel="external">有酒</a></a></p>
+<h3 id="一、关于浏览器同源策略"><a href="#一、关于浏览器同源策略" class="headerlink" title="一、关于浏览器同源策略"></a>一、关于浏览器同源策略</h3><p>含义：两网页的<strong>协议、域名、端口</strong>相同<br><img src="img/cross1.jpg" alt="同源策略"><br>目的：保护用户信息的安全，防止恶意的网站窃取数据<br>限制：由于同源策略受到限制的行为有:</p>
+<ol>
+<li>Cookie、LocalStorag和IndexDB无法读取</li>
+<li>DOM无法获得</li>
+<li>AJAX请求不能发送</li>
+</ol>
+<h3 id="二、实现跨域"><a href="#二、实现跨域" class="headerlink" title="二、实现跨域"></a>二、实现跨域</h3><p>实现跨域访问效果的主要思路：开启两个端口号不同的本地服务器(基于nodejs实现)</p>
+<ol>
+<li>使用<a href="https://github.com/indexzero/http-server" target="_blank" rel="external">http-server</a>作为静态页面的服务器</li>
+<li>使用node创建另外一个服务器</li>
+</ol>
+<!-- document.domain -->
+<h4 id="（一）-document-domain"><a href="#（一）-document-domain" class="headerlink" title="（一） document.domain"></a>（一） document.domain</h4><!-- 方法：<strong>document.domain</strong> -->
+<p>原理：<strong>两个网页一级域名相同，只是二级域名不同</strong>，浏览器允许通过设置document.domain共享 Cookie<br>(A网页:<a href="http://w1.example.com/a.html" target="_blank" rel="external">http://w1.example.com/a.html</a> B网页:<a href="http://w2.example.com/b.html" target="_blank" rel="external">http://w2.example.com/b.html</a>)</p>
+<p>具体做法：</p>
+<ol>
+<li><p>A、B网页均设置：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">document</span>.domain = <span class="string">'example.com'</span>;</div></pre></td></tr></table></figure>
+</li>
+<li><p>A网页通过脚本设置一个Cookie：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">document</span>.cookie = <span class="string">'test1=hello'</span>;</div></pre></td></tr></table></figure>
+</li>
+<li><p>B网页可以读到这个Cookie：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> allCookie = <span class="built_in">document</span>.cookie;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>缺点：只适用于 Cookie 和 iframe 窗口，LocalStorage 和 IndexDB 无法通过这种方法，规避同源政策</p>
+<!-- localtion.hash -->
+<h4 id="（二）-location-hash-片段标识符"><a href="#（二）-location-hash-片段标识符" class="headerlink" title="（二） location.hash(片段标识符)"></a>（二） location.hash(片段标识符)</h4><p>原理：在url中baidu.com#helloworld的’#helloworld’就是<a href="http://www.w3school.com.cn/jsref/prop_loc_hash.asp" target="_blank" rel="external">location.hash</a>，改变hash值不会导致页面刷新，所以可以利用hash值来进行数据的传递，当然数据量是有限的。</p>
+<p>具体做法：</p>
+<ol>
+<li><p>父窗口localhost:8080/cs1.html把信息写入子窗口localhost:8081/cs2.html的hash:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">&lt;!DOCTYPE html&gt;</div><div class="line">&lt;html&gt;</div><div class="line">&lt;head&gt;</div><div class="line">	&lt;meta charset=<span class="string">"utf-8"</span> /&gt;</div><div class="line">	&lt;title&gt;CS1&lt;<span class="regexp">/title&gt;</span></div><div class="line"><span class="regexp">&lt;/</span>head&gt;</div><div class="line">&lt;body&gt;</div><div class="line">	&lt;script type=<span class="string">"text/javascript"</span>&gt;</div><div class="line">		<span class="keyword">let</span> data = <span class="string">'haha'</span>;</div><div class="line">		<span class="keyword">let</span> ifr = <span class="built_in">document</span>.createElement(<span class="string">'iframe'</span>);</div><div class="line">		ifr.style.display = <span class="string">'none'</span>;</div><div class="line">		ifr.src = <span class="string">'http://localhost:8081/cs2.html#'</span>+data;</div><div class="line">		<span class="built_in">document</span>.body.appendChild(ifr);</div><div class="line"></div><div class="line">		<span class="comment">//监听hash是否改变</span></div><div class="line">		<span class="built_in">window</span>.addEventListener(<span class="string">'hashchange'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</div><div class="line">			<span class="built_in">console</span>.log(<span class="string">'获得到的数据是：'</span>, location.hash.substring(<span class="number">1</span>));</div><div class="line">		&#125;);</div><div class="line">	&lt;<span class="regexp">/script&gt;</span></div><div class="line"><span class="regexp">&lt;/</span>body&gt;</div><div class="line">&lt;<span class="regexp">/html&gt;</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>子窗口监听<strong>hashchange事件</strong>得到通知，并改变hash从而实现信息交换:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">&lt;!DOCTYPE html&gt;</div><div class="line">&lt;html&gt;</div><div class="line">&lt;head&gt;</div><div class="line">	&lt;meta charset=<span class="string">"utf-8"</span> /&gt;</div><div class="line">	&lt;title&gt;CS2&lt;<span class="regexp">/title&gt;</span></div><div class="line"><span class="regexp">&lt;/</span>head&gt;</div><div class="line">&lt;body&gt;</div><div class="line">	&lt;script type=<span class="string">"text/javascript"</span>&gt;</div><div class="line">		<span class="comment">//子窗口监听hashchange事件得到通知</span></div><div class="line">		<span class="built_in">window</span>.onhashchange = callback();</div><div class="line"></div><div class="line">		<span class="function"><span class="keyword">function</span> <span class="title">callback</span>(<span class="params"></span>) </span>&#123;</div><div class="line">			<span class="keyword">const</span> data = <span class="string">"some number: 1111"</span>;</div><div class="line">			<span class="comment">//子窗口改变父窗口的片段标识符</span></div><div class="line">			<span class="keyword">try</span> &#123;</div><div class="line">				parent.location.hash = data;</div><div class="line">				<span class="built_in">console</span>.log(data);</div><div class="line">			&#125;<span class="keyword">catch</span>(e) &#123;</div><div class="line">			    <span class="comment">// ie, chrome 下的安全机制无法修改 parent.location.hash</span></div><div class="line">			    <span class="comment">// 所以要利用一个中间的代理 iframe </span></div><div class="line">			    <span class="keyword">var</span> ifrproxy = <span class="built_in">document</span>.createElement(<span class="string">'iframe'</span>);</div><div class="line">			    ifrproxy.style.display = <span class="string">'none'</span>;</div><div class="line">				ifrproxy.src = <span class="string">'http://localhost:8080/cs3.html#'</span> + data;     <span class="comment">// 该文件在请求域名的域下</span></div><div class="line">				<span class="built_in">document</span>.body.appendChild(ifrproxy);</div><div class="line">				<span class="built_in">console</span>.log(<span class="string">'cs3'</span>,data);</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">	&lt;<span class="regexp">/script&gt;</span></div><div class="line"><span class="regexp">&lt;/</span>body&gt;</div><div class="line">&lt;<span class="regexp">/html&gt;</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>由于两个页面不在同一个域下IE、Chrome不允许修改parent.location.hash的值，所以要借助于 localhost:8080 域名下的一个代理 iframe 的 cs3.html 页面:<br><img src="img/cross3.png" alt="两个页面不在同一个域下IE、Chrome不允许修改parent.location.hash的值"></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;script&gt;</div><div class="line">	parent.parent.location.hash = self.location.hash.substring(<span class="number">1</span>);</div><div class="line">&lt;<span class="regexp">/script&gt;</span></div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>结果：<br><img src="img/cross2.png" alt="result"><br>缺点：<br>数据直接暴露在url<br>数据容量和类型都有限等</p>
+<!-- window.name -->
+<h4 id="（三）window-name"><a href="#（三）window-name" class="headerlink" title="（三）window.name"></a>（三）window.name</h4><p>原理：浏览器窗口有window.name属性。这个属性的最大特点是，无论是否同源，只要在同一个窗口里，前一个网页设置了这个属性，后一个网页可以读取它。</p>
+<p>具体做法：<br>首先创建主窗口文件a.html：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">&lt;!DOCTYPE html&gt;</div><div class="line">&lt;html&gt;</div><div class="line">&lt;head&gt;</div><div class="line">	&lt;meta charset=<span class="string">"utf-8"</span> /&gt;</div><div class="line">	&lt;title&gt;a.html&lt;<span class="regexp">/title&gt;</span></div><div class="line"><span class="regexp">&lt;/</span>head&gt;</div><div class="line">&lt;body&gt;</div><div class="line">	&lt;script&gt;</div><div class="line">		<span class="keyword">let</span> data = <span class="string">''</span>;</div><div class="line">		<span class="comment">//子窗口</span></div><div class="line">		<span class="keyword">const</span> ifr = <span class="built_in">document</span>.createElement(<span class="string">'iframe'</span>);</div><div class="line">		ifr.src = <span class="string">"http://localhost:8081/b.html"</span>;</div><div class="line">		ifr.style.display = <span class="string">'none'</span>;</div><div class="line">		<span class="built_in">document</span>.body.appendChild(ifr);</div><div class="line">		</div><div class="line">		ifr.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">			ifr.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">                <span class="comment">//获取b.html中的window.name数据</span></div><div class="line">				data = ifr.contentWindow.name;</div><div class="line">				<span class="built_in">console</span>.log(<span class="string">'收到数据:'</span>, data);</div><div class="line">			&#125;</div><div class="line">            <span class="comment">//因为a.html与该页面的iframe的src如果不是同源的话，无法操作iframe的任何东西</span></div><div class="line">            <span class="comment">//故在b.html加载完后重新指向一个同源的html</span></div><div class="line">			ifr.src = <span class="string">"http://localhost:8080/c.html"</span>;</div><div class="line">		&#125;</div><div class="line">	&lt;<span class="regexp">/script&gt;</span></div><div class="line"><span class="regexp">&lt;/</span>body&gt;</div><div class="line">&lt;<span class="regexp">/html&gt;</span></div></pre></td></tr></table></figure></p>
+<p><img src="img/cross4.png" alt="a.html与该页面的iframe的src如果不是同源的话，无法操作iframe的任何东西"><br>创建b.html文件：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;script&gt;</div><div class="line">	<span class="built_in">window</span>.name = <span class="string">"子窗口传回的数据!"</span>;</div><div class="line">&lt;<span class="regexp">/script&gt;</span></div></pre></td></tr></table></figure></p>
+<p>结果：<br><img src="img/cross5.png" alt="window.name实现跨域"><br>优点：window.name容量很大，可以放置非常长的字符串<br>缺点：必须监听子窗口window.name属性的变化，影响网页性能</p>
+<!-- window.postMessage -->
+<h4 id="（四）window-postMessage"><a href="#（四）window-postMessage" class="headerlink" title="（四）window.postMessage"></a>（四）window.postMessage</h4><p>原理：H5引入的API:跨文档通信API（Cross-document messaging）。这个API为window对象新增一个<strong>window.postMessage</strong>方法，允许跨窗口通信，不论这两个窗口是否同源。</p>
+<p>具体做法：<br>首先创建父窗口：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">&lt;!DOCTYPE html&gt;</div><div class="line">&lt;html&gt;</div><div class="line">&lt;head&gt;</div><div class="line">	&lt;meta charset=<span class="string">"utf-8"</span> /&gt;</div><div class="line">	&lt;title&gt;a.html&lt;<span class="regexp">/title&gt;</span></div><div class="line"><span class="regexp">&lt;/</span>head&gt;</div><div class="line">&lt;body&gt;</div><div class="line">	&lt;iframe src=<span class="string">"http://localhost:8081/b.html"</span> style=<span class="string">'display: none;'</span>&gt;&lt;/iframe&gt;</div><div class="line">	&lt;script&gt;</div><div class="line">		<span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">			<span class="keyword">let</span> targetOrigin = <span class="string">'http://localhost:8081'</span>;</div><div class="line">			<span class="built_in">window</span>.frames[<span class="number">0</span>].postMessage(<span class="string">'我要给你发消息了!'</span>, targetOrigin);</div><div class="line">		&#125;</div><div class="line">        <span class="comment">//监听message事件</span></div><div class="line">		<span class="built_in">window</span>.addEventListener(<span class="string">'message'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</div><div class="line">			<span class="built_in">console</span>.log(<span class="string">'a.html 接收到b.html的消息:'</span>, e.data);</div><div class="line">		&#125;,<span class="literal">false</span>);</div><div class="line">	&lt;<span class="regexp">/script&gt;</span></div><div class="line"><span class="regexp">&lt;/</span>body&gt;</div><div class="line">&lt;<span class="regexp">/html&gt;</span></div></pre></td></tr></table></figure></p>
+<p>接着创建子窗口：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">&lt;script&gt;</div><div class="line">	<span class="built_in">window</span>.addEventListener(<span class="string">'message'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</div><div class="line">        <span class="comment">//过滤不是父窗口发来的消息</span></div><div class="line">		<span class="keyword">if</span>(e.source != <span class="built_in">window</span>.parent) &#123;</div><div class="line">			<span class="keyword">return</span>;</div><div class="line">		&#125;</div><div class="line">        <span class="comment">//过滤不是发向本窗口的消息</span></div><div class="line">        <span class="keyword">if</span>(e.origin !== <span class="string">'http://localhost:8081'</span>) &#123;</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="comment">//获得父窗口数据</span></div><div class="line">		<span class="keyword">let</span> data = e.data;</div><div class="line">		<span class="built_in">console</span>.log(<span class="string">'b.html 接收到a.html的消息:'</span>, data);</div><div class="line">        <span class="comment">//给父窗口发送数据</span></div><div class="line">		parent.postMessage(<span class="string">'我已经接收到消息了!'</span>, e.origin);</div><div class="line">	&#125;);</div><div class="line">&lt;<span class="regexp">/script&gt;</span></div></pre></td></tr></table></figure></p>
+<p>message事件的对象event，提供以下三个属性：</p>
+<ul>
+<li>event.source：发送消息的窗口</li>
+<li>event.origin：消息发向的网址</li>
+<li>event.data：消息内容<br>结果：<br><img src="img/cross6.png" alt="window.postMessage实现跨域"></li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">跨域</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/03/28/跨域的简易实现及测试/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-WPS笔试" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -961,100 +1092,6 @@
 
 
   
-    <article id="post-美团一面-dh" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/03/17/美团一面-dh/">美团点评一面(dh)</a>
-    </h1>
-  
-
-        
-        <a href="/2018/03/17/美团一面-dh/" class="archive-article-date">
-  	<time datetime="2018-03-17T11:39:29.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-17</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ol>
-<li>什么时候开始学前端</li>
-<li>能实习多久有没有实习经历或者项目经验、项目具体情况、项目多少个人一起……</li>
-<li>vue和echarts</li>
-<li>对vue是怎么理解的（我瞎说了一堆，原理，以及和其他框架的对比）</li>
-<li>vue兄弟组件通信，说了一种，他问还有其他方法吗</li>
-<li>webpack在项目中的作用，webpack config</li>
-<li>ES6学得怎么样……</li>
-<li>块级作用域与函数作用域有什么区别</li>
-<li>箭头函数 好处？作用？与匿名函数的区别</li>
-<li>网页，如何更快地展现给用户（也就是性能问题）</li>
-<li>为何要减少http请求</li>
-<li>什么情况下要用到雪碧图，好处、缺点</li>
-<li>跨域问题</li>
-<li>子域名访问父域名，如果IP相同，是否跨域</li>
-<li>jsonp原理</li>
-<li>浏览器端存储数据的方式，限制，区别</li>
-<li>cookies应用场景，限制</li>
-<li>排序算法，有序数组查询具体元素？我答二分法，结束条件，除了二分查找还有其他更高效的方法吗</li>
-<li>链表，和数组的区别，讲一下实际的应用场景。删除简单还是插入简单。</li>
-</ol>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">春招</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/03/17/美团一面-dh/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1152,15 +1189,19 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">春招 笔试</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">春招</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">js</a>
+                <a href="javascript:void(0)" class="js-tag color3">跨域</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">春招 笔试</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">中升物业 总结 前端</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1168,7 +1209,7 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">中升物业 总结 前端</a>
+                <a href="javascript:void(0)" class="js-tag color3">js</a>
               </li>
              
               <li class="article-tag-list-item">
