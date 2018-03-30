@@ -6,18 +6,25 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://Hinsurance.github.io">
-  <title>Tag: 跨域 | Hinsurance</title>
+  <title>浏览器的同源策略和跨域实现(二) | Hinsurance</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="咸鱼总有翻身时">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Hinsurance">
-<meta property="og:url" content="http://Hinsurance.github.io/tags/跨域/index.html">
+  <meta name="description" content="由于在以往的项目开发过程中基本没遇到跨域问题，阿咸在跨域这一块知之甚少，所以决定动手模拟实现几种跨域的方法。浏览器的同源策略和跨域实现(一) 参考资料：浏览器同源政策及其规避方法 阮一峰跨域资源共享 CORS 详解 阮一峰关于跨域，你想知道的全在这里 有酒 同源政策规定，AJAX请求只能发给同源的网址，否则就报错：  除了架设服务器代理（浏览器请求同源服务器，再由后者请求外部服务），有三种方法规避">
+<meta name="keywords" content="跨域">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浏览器的同源策略和跨域实现(二)">
+<meta property="og:url" content="http://Hinsurance.github.io/2018/03/29/跨域/index.html">
 <meta property="og:site_name" content="Hinsurance">
-<meta property="og:description" content="咸鱼总有翻身时">
+<meta property="og:description" content="由于在以往的项目开发过程中基本没遇到跨域问题，阿咸在跨域这一块知之甚少，所以决定动手模拟实现几种跨域的方法。浏览器的同源策略和跨域实现(一) 参考资料：浏览器同源政策及其规避方法 阮一峰跨域资源共享 CORS 详解 阮一峰关于跨域，你想知道的全在这里 有酒 同源政策规定，AJAX请求只能发给同源的网址，否则就报错：  除了架设服务器代理（浏览器请求同源服务器，再由后者请求外部服务），有三种方法规避">
 <meta property="og:locale" content="zh">
+<meta property="og:image" content="http://hinsurance.github.io/2018/03/29/跨域/cross7.png">
+<meta property="og:image" content="http://hinsurance.github.io/2018/03/29/跨域/cross8.png">
+<meta property="og:image" content="http://hinsurance.github.io/2018/03/29/跨域/cross9.jpg">
+<meta property="og:image" content="http://hinsurance.github.io/2018/03/29/跨域/cross10.png">
+<meta property="og:updated_time" content="2018-03-30T09:25:17.461Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hinsurance">
-<meta name="twitter:description" content="咸鱼总有翻身时">
+<meta name="twitter:title" content="浏览器的同源策略和跨域实现(二)">
+<meta name="twitter:description" content="由于在以往的项目开发过程中基本没遇到跨域问题，阿咸在跨域这一块知之甚少，所以决定动手模拟实现几种跨域的方法。浏览器的同源策略和跨域实现(一) 参考资料：浏览器同源政策及其规避方法 阮一峰跨域资源共享 CORS 详解 阮一峰关于跨域，你想知道的全在这里 有酒 同源政策规定，AJAX请求只能发给同源的网址，否则就报错：  除了架设服务器代理（浏览器请求同源服务器，再由后者请求外部服务），有三种方法规避">
+<meta name="twitter:image" content="http://hinsurance.github.io/2018/03/29/跨域/cross7.png">
   
     <link rel="alternative" href="/atom.xml" title="Hinsurance" type="application/atom+xml">
   
@@ -147,36 +154,65 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-跨域" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      浏览器的同源策略和跨域实现(二)
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/03/29/跨域/" class="archive-article-date">
+
+        
+        <a href="/2018/03/29/跨域/" class="archive-article-date">
   	<time datetime="2018-03-29T15:22:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-29</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/29/跨域/">浏览器的同源策略和跨域实现(二)</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>由于在以往的项目开发过程中基本没遇到跨域问题，阿咸在跨域这一块知之甚少，所以决定动手模拟实现几种跨域的方法。<br><a href="https://hinsurance.github.io/2018/03/28/%E8%B7%A8%E5%9F%9F%E7%9A%84%E7%AE%80%E6%98%93%E5%AE%9E%E7%8E%B0%E5%8F%8A%E6%B5%8B%E8%AF%95/" target="_blank">浏览器的同源策略和跨域实现(一)</a></p>
+<p>参考资料：<br><a href="http://www.ruanyifeng.com/blog/2016/04/same-origin-policy.html" target="_blank" rel="external">浏览器同源政策及其规避方法 阮一峰</a><br><a href="http://www.ruanyifeng.com/blog/2016/04/cors.html" target="_blank" rel="external">跨域资源共享 CORS 详解 阮一峰</a><br><a href="https://zhuanlan.zhihu.com/p/25778815" target="_blank" rel="external">关于跨域，你想知道的全在这里 <a href="https://www.zhihu.com/people/lindongzhou/activities" target="_blank" rel="external">有酒</a></a></p>
+<p>同源政策规定，AJAX请求只能发给同源的网址，否则就报错：</p>
+<p><img src="/2018/03/29/跨域/cross7.png" alt="Ajax跨域请求报错"></p>
+<p>除了架设服务器代理（浏览器请求同源服务器，再由后者请求外部服务），有三种方法规避这个限制：</p>
+<ul>
+<li>JSONP</li>
+<li>WebSocket</li>
+<li>CORS</li>
+</ul>
+<h4 id="（五）JSONP（JSON-with-padding）"><a href="#（五）JSONP（JSON-with-padding）" class="headerlink" title="（五）JSONP（JSON with padding）"></a>（五）JSONP（JSON with padding）</h4><p>原理：使用script标签的src属性实现跨域，向服务器请求JSON数据，这种做法不受同源政策限制；服务器收到请求后，将数据放在一个指定名字的回调函数里传回来。</p>
+<p>具体做法：</p>
+<ol>
+<li>前端动态添加script标签，设置好src，并指定回调函数的名字</li>
+<li>服务端处理前端请求，并把数据放在回调函数的参数位置</li>
+<li>收到结果后因为是script标签，浏览器会当时脚本进行运行，从而达到跨域获取数据的目的</li>
+</ol>
+<p>前端页面：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span> /&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">title</span>&gt;</span>JSONP<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="undefined"></span></div><div class="line"><span class="undefined">		function addScriptTag(src) &#123;</span></div><div class="line"><span class="undefined">			let script = document.createElement('script');</span></div><div class="line"><span class="undefined">			script.setAttribute('type','text/javascript');</span></div><div class="line"><span class="undefined">			script.src = src;</span></div><div class="line"><span class="undefined">			document.body.appendChild(script);</span></div><div class="line"><span class="undefined">		&#125;</span></div><div class="line"><span class="undefined"></span></div><div class="line"><span class="undefined">		function jsonpCallback(data) &#123;</span></div><div class="line"><span class="undefined">			console.log(data);</span></div><div class="line"><span class="undefined">			console.log(typeof data);</span></div><div class="line"><span class="undefined">			console.log('获得数据X的值：'+ data.x);</span></div><div class="line"><span class="undefined">		&#125;</span></div><div class="line"><span class="undefined"></span></div><div class="line"><span class="undefined">		window.onload = function() &#123;</span></div><div class="line"><span class="undefined">			//动态添加script标签，指定回调函数的名字jsonpCallback</span></div><div class="line"><span class="undefined">			addScriptTag('http://127.0.0.1:3000?callback=jsonpCallback');</span></div><div class="line"><span class="undefined">		&#125;</span></div><div class="line"><span class="undefined">	</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>动态添加script标签，设置src属性，向服务器发出请求，该请求中的callback参数，用来指定回调函数的名字。<br>后端逻辑：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> http = <span class="built_in">require</span>(<span class="string">'http'</span>);</div><div class="line"><span class="keyword">const</span> url = <span class="built_in">require</span>(<span class="string">'url'</span>);</div><div class="line"></div><div class="line">http.createServer(<span class="function"><span class="keyword">function</span>(<span class="params">request, response</span>) </span>&#123;</div><div class="line">	<span class="keyword">const</span> data = &#123;</div><div class="line">		x: <span class="number">10</span></div><div class="line">    &#125;;</div><div class="line">    <span class="keyword">const</span> callback = url.parse(request.url,<span class="literal">true</span>).query.callback;</div><div class="line">    <span class="comment">//console.log(callback);</span></div><div class="line">	<span class="comment">//发送http头部</span></div><div class="line">	<span class="comment">//http状态码 200 OK</span></div><div class="line">	<span class="comment">//内容类型 text/plain</span></div><div class="line">	response.writeHead(<span class="number">200</span>, &#123;<span class="string">'Content-Type'</span>: <span class="string">'text/plain'</span>&#125;);</div><div class="line">	response.end(<span class="string">`<span class="subst">$&#123;callback&#125;</span>(<span class="subst">$&#123;<span class="built_in">JSON</span>.stringify(data)&#125;</span>)`</span>);</div><div class="line">&#125;).listen(<span class="number">3000</span>,<span class="string">'127.0.0.1'</span>);</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(<span class="string">'Server running at http://127.0.0.1:3000/'</span>);</div></pre></td></tr></table></figure></p>
+<p>后端处理请求后把数据写在回调函数的参数位置<br>结果：<br>跨域获取到数据<br><img src="/2018/03/29/跨域/cross8.png" alt="JSONP实现跨域"><br>优点：简单适用，老式浏览器全部支持，服务器改造非常小<br>缺点：<br>只支持GET请求（script标签本身的限制）；<br>要确定JSONP请求是否失败并不容易（用计时器检测规定时间内是否收到响应）；<br>JSONP是从其他域中加载代码执行，若其他域不安全，可能在响应中夹带一些恶意代码</p>
+<h4 id="（六）Websocket"><a href="#（六）Websocket" class="headerlink" title="（六）Websocket"></a>（六）Websocket</h4><p>WebSocket是一种通信协议，使用ws://(非加密)和wss://(加密)作为协议前缀。该协议不实行同源政策，只要服务器支持，就可以通过它进行跨源通信。</p>
+<p>为了实现WebSocket通信，在HTTP连接建立之后，需要完成一次“握手”的步骤。<br><strong>握手请求：</strong><br>为了实现WebSocket通信，需要用到HTTP的<strong>Upgrade首部字段</strong>，告知服务器通信协议发生改变，以达到握手的目的。<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">GET /chat HTTP/1.1</div><div class="line">Host: server.example.com</div><div class="line"><span class="tag">&lt;<span class="name">strong</span>&gt;</span>Upgrade: websocket<span class="tag">&lt;/<span class="name">strong</span>&gt;</span></div><div class="line">Connection: Upgrade</div><div class="line">Sec-WebSocket-Key: dGhlIHhbXBsZSBub25jZQ==</div><div class="line">Origin: http://example.com</div><div class="line">Sec-WebSocket-Protocol: chat, superchat</div><div class="line">Sec-WebSocket-Version: 13</div></pre></td></tr></table></figure></p>
+<p>Sec-WebSocket-Key:记录握手过程中必不可少的键值<br>Sec-WebSocket-Protocol:记录使用的子协议</p>
+<p><strong>握手响应：</strong><br>对于之前的请求，返回状态码101 Switching Protocols的响应<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">HTTP / 1.1 101 Switching Protocols</div><div class="line">Upgrade: websocket</div><div class="line">Connection: Upgrade</div><div class="line">Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=</div><div class="line">Sec-WebSocket-Protocol: chat</div></pre></td></tr></table></figure></p>
+<p><img src="/2018/03/29/跨域/cross9.jpg" alt="图解HTTP中的WebSocket通信"></p>
+<font size="1"><strong>图解HTTP中的WebSocket通信</strong></font>
 
-        <div class="article-info info-on-right">
-          
+<h4 id="（七）CORS"><a href="#（七）CORS" class="headerlink" title="（七）CORS"></a>（七）CORS</h4><p>关于CORS主要看红宝书和<a href="http://www.ruanyifeng.com/blog/2016/04/cors.html" target="_blank" rel="external">阮一峰老师的 跨域资源共享 CORS 详解</a></p>
+<p>简单模拟：<br>前端代码：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">&lt;!DOCTYPE html&gt;</div><div class="line">&lt;html&gt;</div><div class="line">&lt;head&gt;</div><div class="line">	&lt;meta charset=<span class="string">"utf-8"</span> /&gt;</div><div class="line">	&lt;title&gt;cors&lt;<span class="regexp">/title&gt;</span></div><div class="line"><span class="regexp">&lt;/</span>head&gt;</div><div class="line">&lt;body&gt;</div><div class="line">	&lt;script&gt;</div><div class="line">		<span class="keyword">const</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</div><div class="line">		xhr.open(<span class="string">'GET'</span>, <span class="string">'http://127.0.0.1:3000'</span>, <span class="literal">true</span>);</div><div class="line">		xhr.onreadystatechange = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">			<span class="keyword">if</span> (xhr.readyState === <span class="number">4</span>) &#123;</div><div class="line">				<span class="keyword">if</span> (xhr.status &gt;= <span class="number">200</span> &amp;&amp; xhr.status &lt; <span class="number">300</span> || xhr.status === <span class="number">304</span>) &#123;</div><div class="line">					<span class="built_in">console</span>.log(xhr.responseText);</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		xhr.send(<span class="literal">null</span>);</div><div class="line">	&lt;<span class="regexp">/script&gt;</span></div><div class="line"><span class="regexp">&lt;/</span>body&gt;</div><div class="line">&lt;<span class="regexp">/html&gt;</span></div></pre></td></tr></table></figure></p>
+<p>后端代码：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> http = <span class="built_in">require</span>(<span class="string">'http'</span>);</div><div class="line">http.createServer(<span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</div><div class="line"></div><div class="line">    res.writeHead(<span class="number">200</span>, &#123;</div><div class="line">	<span class="string">'Access-Control-Allow-Origin'</span>: <span class="string">'http://localhost:8080'</span></div><div class="line">    &#125;);</div><div class="line">    res.end(<span class="string">'这是你要的数据：1111'</span>);</div><div class="line"></div><div class="line">&#125;).listen(<span class="number">3000</span>, <span class="string">'127.0.0.1'</span>);</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(<span class="string">'启动服务，监听 127.0.0.1:3000'</span>);</div></pre></td></tr></table></figure></p>
+<p>结果：<br><img src="/2018/03/29/跨域/cross10.png" alt="CORS实现跨域"><br>优点：<br>支持所有类型的HTTP请求</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -188,57 +224,106 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://Hinsurance.github.io/2018/03/29/跨域/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/03/28/浏览器同源策略/" class="archive-article-date">
-  	<time datetime="2018-03-28T06:59:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-28</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2018/03/28/浏览器同源策略/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">浏览器的同源策略和跨域实现(一)</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/28/浏览器同源策略/">浏览器的同源策略和跨域实现(一)</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">跨域</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
+
+  
 
 
           </div>
@@ -261,9 +346,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,

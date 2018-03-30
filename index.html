@@ -149,19 +149,123 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-跨域的简易实现及测试" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-跨域" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/03/28/跨域的简易实现及测试/">浏览器的同源策略和跨域实现(一)</a>
+      <a class="article-title" href="/2018/03/29/跨域/">浏览器的同源策略和跨域实现(二)</a>
     </h1>
   
 
         
-        <a href="/2018/03/28/跨域的简易实现及测试/" class="archive-article-date">
+        <a href="/2018/03/29/跨域/" class="archive-article-date">
+  	<time datetime="2018-03-29T15:22:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-29</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>由于在以往的项目开发过程中基本没遇到跨域问题，阿咸在跨域这一块知之甚少，所以决定动手模拟实现几种跨域的方法。<br><a href="https://hinsurance.github.io/2018/03/28/%E8%B7%A8%E5%9F%9F%E7%9A%84%E7%AE%80%E6%98%93%E5%AE%9E%E7%8E%B0%E5%8F%8A%E6%B5%8B%E8%AF%95/" target="_blank">浏览器的同源策略和跨域实现(一)</a></p>
+<p>参考资料：<br><a href="http://www.ruanyifeng.com/blog/2016/04/same-origin-policy.html" target="_blank" rel="external">浏览器同源政策及其规避方法 阮一峰</a><br><a href="http://www.ruanyifeng.com/blog/2016/04/cors.html" target="_blank" rel="external">跨域资源共享 CORS 详解 阮一峰</a><br><a href="https://zhuanlan.zhihu.com/p/25778815" target="_blank" rel="external">关于跨域，你想知道的全在这里 <a href="https://www.zhihu.com/people/lindongzhou/activities" target="_blank" rel="external">有酒</a></a></p>
+<p>同源政策规定，AJAX请求只能发给同源的网址，否则就报错：</p>
+<p><img src="/2018/03/29/跨域/cross7.png" alt="Ajax跨域请求报错"></p>
+<p>除了架设服务器代理（浏览器请求同源服务器，再由后者请求外部服务），有三种方法规避这个限制：</p>
+<ul>
+<li>JSONP</li>
+<li>WebSocket</li>
+<li>CORS</li>
+</ul>
+<h4 id="（五）JSONP（JSON-with-padding）"><a href="#（五）JSONP（JSON-with-padding）" class="headerlink" title="（五）JSONP（JSON with padding）"></a>（五）JSONP（JSON with padding）</h4><p>原理：使用script标签的src属性实现跨域，向服务器请求JSON数据，这种做法不受同源政策限制；服务器收到请求后，将数据放在一个指定名字的回调函数里传回来。</p>
+<p>具体做法：</p>
+<ol>
+<li>前端动态添加script标签，设置好src，并指定回调函数的名字</li>
+<li>服务端处理前端请求，并把数据放在回调函数的参数位置</li>
+<li>收到结果后因为是script标签，浏览器会当时脚本进行运行，从而达到跨域获取数据的目的</li>
+</ol>
+<p>前端页面：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span> /&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">title</span>&gt;</span>JSONP<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="undefined"></span></div><div class="line"><span class="undefined">		function addScriptTag(src) &#123;</span></div><div class="line"><span class="undefined">			let script = document.createElement('script');</span></div><div class="line"><span class="undefined">			script.setAttribute('type','text/javascript');</span></div><div class="line"><span class="undefined">			script.src = src;</span></div><div class="line"><span class="undefined">			document.body.appendChild(script);</span></div><div class="line"><span class="undefined">		&#125;</span></div><div class="line"><span class="undefined"></span></div><div class="line"><span class="undefined">		function jsonpCallback(data) &#123;</span></div><div class="line"><span class="undefined">			console.log(data);</span></div><div class="line"><span class="undefined">			console.log(typeof data);</span></div><div class="line"><span class="undefined">			console.log('获得数据X的值：'+ data.x);</span></div><div class="line"><span class="undefined">		&#125;</span></div><div class="line"><span class="undefined"></span></div><div class="line"><span class="undefined">		window.onload = function() &#123;</span></div><div class="line"><span class="undefined">			//动态添加script标签，指定回调函数的名字jsonpCallback</span></div><div class="line"><span class="undefined">			addScriptTag('http://127.0.0.1:3000?callback=jsonpCallback');</span></div><div class="line"><span class="undefined">		&#125;</span></div><div class="line"><span class="undefined">	</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>动态添加script标签，设置src属性，向服务器发出请求，该请求中的callback参数，用来指定回调函数的名字。<br>后端逻辑：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> http = <span class="built_in">require</span>(<span class="string">'http'</span>);</div><div class="line"><span class="keyword">const</span> url = <span class="built_in">require</span>(<span class="string">'url'</span>);</div><div class="line"></div><div class="line">http.createServer(<span class="function"><span class="keyword">function</span>(<span class="params">request, response</span>) </span>&#123;</div><div class="line">	<span class="keyword">const</span> data = &#123;</div><div class="line">		x: <span class="number">10</span></div><div class="line">    &#125;;</div><div class="line">    <span class="keyword">const</span> callback = url.parse(request.url,<span class="literal">true</span>).query.callback;</div><div class="line">    <span class="comment">//console.log(callback);</span></div><div class="line">	<span class="comment">//发送http头部</span></div><div class="line">	<span class="comment">//http状态码 200 OK</span></div><div class="line">	<span class="comment">//内容类型 text/plain</span></div><div class="line">	response.writeHead(<span class="number">200</span>, &#123;<span class="string">'Content-Type'</span>: <span class="string">'text/plain'</span>&#125;);</div><div class="line">	response.end(<span class="string">`<span class="subst">$&#123;callback&#125;</span>(<span class="subst">$&#123;<span class="built_in">JSON</span>.stringify(data)&#125;</span>)`</span>);</div><div class="line">&#125;).listen(<span class="number">3000</span>,<span class="string">'127.0.0.1'</span>);</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(<span class="string">'Server running at http://127.0.0.1:3000/'</span>);</div></pre></td></tr></table></figure></p>
+<p>后端处理请求后把数据写在回调函数的参数位置<br>结果：<br>跨域获取到数据<br><img src="/2018/03/29/跨域/cross8.png" alt="JSONP实现跨域"><br>优点：简单适用，老式浏览器全部支持，服务器改造非常小<br>缺点：<br>只支持GET请求（script标签本身的限制）；<br>要确定JSONP请求是否失败并不容易（用计时器检测规定时间内是否收到响应）；<br>JSONP是从其他域中加载代码执行，若其他域不安全，可能在响应中夹带一些恶意代码</p>
+<h4 id="（六）Websocket"><a href="#（六）Websocket" class="headerlink" title="（六）Websocket"></a>（六）Websocket</h4><p>WebSocket是一种通信协议，使用ws://(非加密)和wss://(加密)作为协议前缀。该协议不实行同源政策，只要服务器支持，就可以通过它进行跨源通信。</p>
+<p>为了实现WebSocket通信，在HTTP连接建立之后，需要完成一次“握手”的步骤。<br><strong>握手请求：</strong><br>为了实现WebSocket通信，需要用到HTTP的<strong>Upgrade首部字段</strong>，告知服务器通信协议发生改变，以达到握手的目的。<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">GET /chat HTTP/1.1</div><div class="line">Host: server.example.com</div><div class="line"><span class="tag">&lt;<span class="name">strong</span>&gt;</span>Upgrade: websocket<span class="tag">&lt;/<span class="name">strong</span>&gt;</span></div><div class="line">Connection: Upgrade</div><div class="line">Sec-WebSocket-Key: dGhlIHhbXBsZSBub25jZQ==</div><div class="line">Origin: http://example.com</div><div class="line">Sec-WebSocket-Protocol: chat, superchat</div><div class="line">Sec-WebSocket-Version: 13</div></pre></td></tr></table></figure></p>
+<p>Sec-WebSocket-Key:记录握手过程中必不可少的键值<br>Sec-WebSocket-Protocol:记录使用的子协议</p>
+<p><strong>握手响应：</strong><br>对于之前的请求，返回状态码101 Switching Protocols的响应<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">HTTP / 1.1 101 Switching Protocols</div><div class="line">Upgrade: websocket</div><div class="line">Connection: Upgrade</div><div class="line">Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=</div><div class="line">Sec-WebSocket-Protocol: chat</div></pre></td></tr></table></figure></p>
+<p><img src="/2018/03/29/跨域/cross9.jpg" alt="图解HTTP中的WebSocket通信"></p>
+<font size="1"><strong>图解HTTP中的WebSocket通信</strong></font>
+
+<h4 id="（七）CORS"><a href="#（七）CORS" class="headerlink" title="（七）CORS"></a>（七）CORS</h4><p>关于CORS主要看红宝书和<a href="http://www.ruanyifeng.com/blog/2016/04/cors.html" target="_blank" rel="external">阮一峰老师的 跨域资源共享 CORS 详解</a></p>
+<p>简单模拟：<br>前端代码：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">&lt;!DOCTYPE html&gt;</div><div class="line">&lt;html&gt;</div><div class="line">&lt;head&gt;</div><div class="line">	&lt;meta charset=<span class="string">"utf-8"</span> /&gt;</div><div class="line">	&lt;title&gt;cors&lt;<span class="regexp">/title&gt;</span></div><div class="line"><span class="regexp">&lt;/</span>head&gt;</div><div class="line">&lt;body&gt;</div><div class="line">	&lt;script&gt;</div><div class="line">		<span class="keyword">const</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</div><div class="line">		xhr.open(<span class="string">'GET'</span>, <span class="string">'http://127.0.0.1:3000'</span>, <span class="literal">true</span>);</div><div class="line">		xhr.onreadystatechange = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">			<span class="keyword">if</span> (xhr.readyState === <span class="number">4</span>) &#123;</div><div class="line">				<span class="keyword">if</span> (xhr.status &gt;= <span class="number">200</span> &amp;&amp; xhr.status &lt; <span class="number">300</span> || xhr.status === <span class="number">304</span>) &#123;</div><div class="line">					<span class="built_in">console</span>.log(xhr.responseText);</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		xhr.send(<span class="literal">null</span>);</div><div class="line">	&lt;<span class="regexp">/script&gt;</span></div><div class="line"><span class="regexp">&lt;/</span>body&gt;</div><div class="line">&lt;<span class="regexp">/html&gt;</span></div></pre></td></tr></table></figure></p>
+<p>后端代码：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> http = <span class="built_in">require</span>(<span class="string">'http'</span>);</div><div class="line">http.createServer(<span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</div><div class="line"></div><div class="line">    res.writeHead(<span class="number">200</span>, &#123;</div><div class="line">	<span class="string">'Access-Control-Allow-Origin'</span>: <span class="string">'http://localhost:8080'</span></div><div class="line">    &#125;);</div><div class="line">    res.end(<span class="string">'这是你要的数据：1111'</span>);</div><div class="line"></div><div class="line">&#125;).listen(<span class="number">3000</span>, <span class="string">'127.0.0.1'</span>);</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(<span class="string">'启动服务，监听 127.0.0.1:3000'</span>);</div></pre></td></tr></table></figure></p>
+<p>结果：<br><img src="/2018/03/29/跨域/cross10.png" alt="CORS实现跨域"><br>优点：<br>支持所有类型的HTTP请求</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">跨域</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/03/29/跨域/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-浏览器同源策略" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/03/28/浏览器同源策略/">浏览器的同源策略和跨域实现(一)</a>
+    </h1>
+  
+
+        
+        <a href="/2018/03/28/浏览器同源策略/" class="archive-article-date">
   	<time datetime="2018-03-28T06:59:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-28</time>
 </a>
         
@@ -170,7 +274,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>由于在以往的项目开发过程中基本没遇到跨域问题，阿咸在跨域这一块知之甚少，所以决定动手模拟实现几种跨域的方法。<br>参考资料：<br><a href="http://www.ruanyifeng.com/blog/2016/04/same-origin-policy.html" target="_blank" rel="external">浏览器同源政策及其规避方法 阮一峰</a><br><a href="http://www.ruanyifeng.com/blog/2016/04/cors.html" target="_blank" rel="external">跨域资源共享 CORS 详解 阮一峰</a><br><a href="https://zhuanlan.zhihu.com/p/25778815" target="_blank" rel="external">关于跨域，你想知道的全在这里 <a href="https://www.zhihu.com/people/lindongzhou/activities" target="_blank" rel="external">有酒</a></a></p>
-<h3 id="一、关于浏览器同源策略"><a href="#一、关于浏览器同源策略" class="headerlink" title="一、关于浏览器同源策略"></a>一、关于浏览器同源策略</h3><p>含义：两网页的<strong>协议、域名、端口</strong>相同<br><img src="img/cross1.jpg" alt="同源策略"><br>目的：保护用户信息的安全，防止恶意的网站窃取数据<br>限制：由于同源策略受到限制的行为有:</p>
+<h3 id="一、关于浏览器同源策略"><a href="#一、关于浏览器同源策略" class="headerlink" title="一、关于浏览器同源策略"></a>一、关于浏览器同源策略</h3><p>含义：两网页的<strong>协议、域名、端口</strong>相同<br><img src="/2018/03/28/浏览器同源策略/cross1.png" alt="同源策略"><br><img src="/2018/03/28/浏览器同源策略/img/cross1.jpg" alt="同源策略"><br>目的：保护用户信息的安全，防止恶意的网站窃取数据<br>限制：由于同源策略受到限制的行为有:</p>
 <ol>
 <li>Cookie、LocalStorag和IndexDB无法读取</li>
 <li>DOM无法获得</li>
@@ -207,25 +311,25 @@
 <li><p>子窗口监听<strong>hashchange事件</strong>得到通知，并改变hash从而实现信息交换:</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">&lt;!DOCTYPE html&gt;</div><div class="line">&lt;html&gt;</div><div class="line">&lt;head&gt;</div><div class="line">	&lt;meta charset=<span class="string">"utf-8"</span> /&gt;</div><div class="line">	&lt;title&gt;CS2&lt;<span class="regexp">/title&gt;</span></div><div class="line"><span class="regexp">&lt;/</span>head&gt;</div><div class="line">&lt;body&gt;</div><div class="line">	&lt;script type=<span class="string">"text/javascript"</span>&gt;</div><div class="line">		<span class="comment">//子窗口监听hashchange事件得到通知</span></div><div class="line">		<span class="built_in">window</span>.onhashchange = callback();</div><div class="line"></div><div class="line">		<span class="function"><span class="keyword">function</span> <span class="title">callback</span>(<span class="params"></span>) </span>&#123;</div><div class="line">			<span class="keyword">const</span> data = <span class="string">"some number: 1111"</span>;</div><div class="line">			<span class="comment">//子窗口改变父窗口的片段标识符</span></div><div class="line">			<span class="keyword">try</span> &#123;</div><div class="line">				parent.location.hash = data;</div><div class="line">				<span class="built_in">console</span>.log(data);</div><div class="line">			&#125;<span class="keyword">catch</span>(e) &#123;</div><div class="line">			    <span class="comment">// ie, chrome 下的安全机制无法修改 parent.location.hash</span></div><div class="line">			    <span class="comment">// 所以要利用一个中间的代理 iframe </span></div><div class="line">			    <span class="keyword">var</span> ifrproxy = <span class="built_in">document</span>.createElement(<span class="string">'iframe'</span>);</div><div class="line">			    ifrproxy.style.display = <span class="string">'none'</span>;</div><div class="line">				ifrproxy.src = <span class="string">'http://localhost:8080/cs3.html#'</span> + data;     <span class="comment">// 该文件在请求域名的域下</span></div><div class="line">				<span class="built_in">document</span>.body.appendChild(ifrproxy);</div><div class="line">				<span class="built_in">console</span>.log(<span class="string">'cs3'</span>,data);</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">	&lt;<span class="regexp">/script&gt;</span></div><div class="line"><span class="regexp">&lt;/</span>body&gt;</div><div class="line">&lt;<span class="regexp">/html&gt;</span></div></pre></td></tr></table></figure>
 </li>
-<li><p>由于两个页面不在同一个域下IE、Chrome不允许修改parent.location.hash的值，所以要借助于 localhost:8080 域名下的一个代理 iframe 的 cs3.html 页面:<br><img src="img/cross3.png" alt="两个页面不在同一个域下IE、Chrome不允许修改parent.location.hash的值"></p>
+<li><p>由于两个页面不在同一个域下IE、Chrome不允许修改parent.location.hash的值，所以要借助于 localhost:8080 域名下的一个代理 iframe 的 cs3.html 页面:<br><img src="/2018/03/28/浏览器同源策略/img/cross3.png" alt="两个页面不在同一个域下IE、Chrome不允许修改parent.location.hash的值"></p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;script&gt;</div><div class="line">	parent.parent.location.hash = self.location.hash.substring(<span class="number">1</span>);</div><div class="line">&lt;<span class="regexp">/script&gt;</span></div></pre></td></tr></table></figure>
 </li>
 </ol>
-<p>结果：<br><img src="img/cross2.png" alt="result"><br>缺点：<br>数据直接暴露在url<br>数据容量和类型都有限等</p>
+<p>结果：<br><img src="/2018/03/28/浏览器同源策略/img/cross2.png" alt="result"><br>缺点：<br>数据直接暴露在url<br>数据容量和类型都有限等</p>
 <!-- window.name -->
 <h4 id="（三）window-name"><a href="#（三）window-name" class="headerlink" title="（三）window.name"></a>（三）window.name</h4><p>原理：浏览器窗口有window.name属性。这个属性的最大特点是，无论是否同源，只要在同一个窗口里，前一个网页设置了这个属性，后一个网页可以读取它。</p>
 <p>具体做法：<br>首先创建主窗口文件a.html：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">&lt;!DOCTYPE html&gt;</div><div class="line">&lt;html&gt;</div><div class="line">&lt;head&gt;</div><div class="line">	&lt;meta charset=<span class="string">"utf-8"</span> /&gt;</div><div class="line">	&lt;title&gt;a.html&lt;<span class="regexp">/title&gt;</span></div><div class="line"><span class="regexp">&lt;/</span>head&gt;</div><div class="line">&lt;body&gt;</div><div class="line">	&lt;script&gt;</div><div class="line">		<span class="keyword">let</span> data = <span class="string">''</span>;</div><div class="line">		<span class="comment">//子窗口</span></div><div class="line">		<span class="keyword">const</span> ifr = <span class="built_in">document</span>.createElement(<span class="string">'iframe'</span>);</div><div class="line">		ifr.src = <span class="string">"http://localhost:8081/b.html"</span>;</div><div class="line">		ifr.style.display = <span class="string">'none'</span>;</div><div class="line">		<span class="built_in">document</span>.body.appendChild(ifr);</div><div class="line">		</div><div class="line">		ifr.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">			ifr.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">                <span class="comment">//获取b.html中的window.name数据</span></div><div class="line">				data = ifr.contentWindow.name;</div><div class="line">				<span class="built_in">console</span>.log(<span class="string">'收到数据:'</span>, data);</div><div class="line">			&#125;</div><div class="line">            <span class="comment">//因为a.html与该页面的iframe的src如果不是同源的话，无法操作iframe的任何东西</span></div><div class="line">            <span class="comment">//故在b.html加载完后重新指向一个同源的html</span></div><div class="line">			ifr.src = <span class="string">"http://localhost:8080/c.html"</span>;</div><div class="line">		&#125;</div><div class="line">	&lt;<span class="regexp">/script&gt;</span></div><div class="line"><span class="regexp">&lt;/</span>body&gt;</div><div class="line">&lt;<span class="regexp">/html&gt;</span></div></pre></td></tr></table></figure></p>
-<p><img src="img/cross4.png" alt="a.html与该页面的iframe的src如果不是同源的话，无法操作iframe的任何东西"><br>创建b.html文件：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;script&gt;</div><div class="line">	<span class="built_in">window</span>.name = <span class="string">"子窗口传回的数据!"</span>;</div><div class="line">&lt;<span class="regexp">/script&gt;</span></div></pre></td></tr></table></figure></p>
-<p>结果：<br><img src="img/cross5.png" alt="window.name实现跨域"><br>优点：window.name容量很大，可以放置非常长的字符串<br>缺点：必须监听子窗口window.name属性的变化，影响网页性能</p>
+<p><img src="/2018/03/28/浏览器同源策略/img/cross4.png" alt="a.html与该页面的iframe的src如果不是同源的话，无法操作iframe的任何东西"><br>创建b.html文件：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;script&gt;</div><div class="line">	<span class="built_in">window</span>.name = <span class="string">"子窗口传回的数据!"</span>;</div><div class="line">&lt;<span class="regexp">/script&gt;</span></div></pre></td></tr></table></figure></p>
+<p>结果：<br><img src="/2018/03/28/浏览器同源策略/img/cross5.png" alt="window.name实现跨域"><br>优点：window.name容量很大，可以放置非常长的字符串<br>缺点：必须监听子窗口window.name属性的变化，影响网页性能</p>
 <!-- window.postMessage -->
 <h4 id="（四）window-postMessage"><a href="#（四）window-postMessage" class="headerlink" title="（四）window.postMessage"></a>（四）window.postMessage</h4><p>原理：H5引入的API:跨文档通信API（Cross-document messaging）。这个API为window对象新增一个<strong>window.postMessage</strong>方法，允许跨窗口通信，不论这两个窗口是否同源。</p>
-<p>具体做法：<br>首先创建父窗口：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">&lt;!DOCTYPE html&gt;</div><div class="line">&lt;html&gt;</div><div class="line">&lt;head&gt;</div><div class="line">	&lt;meta charset=<span class="string">"utf-8"</span> /&gt;</div><div class="line">	&lt;title&gt;a.html&lt;<span class="regexp">/title&gt;</span></div><div class="line"><span class="regexp">&lt;/</span>head&gt;</div><div class="line">&lt;body&gt;</div><div class="line">	&lt;iframe src=<span class="string">"http://localhost:8081/b.html"</span> style=<span class="string">'display: none;'</span>&gt;&lt;/iframe&gt;</div><div class="line">	&lt;script&gt;</div><div class="line">		<span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">			<span class="keyword">let</span> targetOrigin = <span class="string">'http://localhost:8081'</span>;</div><div class="line">			<span class="built_in">window</span>.frames[<span class="number">0</span>].postMessage(<span class="string">'我要给你发消息了!'</span>, targetOrigin);</div><div class="line">		&#125;</div><div class="line">        <span class="comment">//监听message事件</span></div><div class="line">		<span class="built_in">window</span>.addEventListener(<span class="string">'message'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</div><div class="line">			<span class="built_in">console</span>.log(<span class="string">'a.html 接收到b.html的消息:'</span>, e.data);</div><div class="line">		&#125;,<span class="literal">false</span>);</div><div class="line">	&lt;<span class="regexp">/script&gt;</span></div><div class="line"><span class="regexp">&lt;/</span>body&gt;</div><div class="line">&lt;<span class="regexp">/html&gt;</span></div></pre></td></tr></table></figure></p>
+<p>具体做法：<br>首先创建父窗口：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">&lt;!DOCTYPE html&gt;</div><div class="line">&lt;html&gt;</div><div class="line">&lt;head&gt;</div><div class="line">	&lt;meta charset=<span class="string">"utf-8"</span> /&gt;</div><div class="line">	&lt;title&gt;a.html&lt;<span class="regexp">/title&gt;</span></div><div class="line"><span class="regexp">&lt;/</span>head&gt;</div><div class="line">&lt;body&gt;</div><div class="line">	&lt;iframe src=<span class="string">"http://localhost:8081/b.html"</span> style=<span class="string">'display: none;'</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span></div><div class="line">	&lt;script&gt;</div><div class="line">		<span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">			<span class="keyword">let</span> targetOrigin = <span class="string">'http://localhost:8081'</span>;</div><div class="line">			<span class="built_in">window</span>.frames[<span class="number">0</span>].postMessage(<span class="string">'我要给你发消息了!'</span>, targetOrigin);</div><div class="line">		&#125;</div><div class="line">        <span class="comment">//监听message事件</span></div><div class="line">		<span class="built_in">window</span>.addEventListener(<span class="string">'message'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</div><div class="line">			<span class="built_in">console</span>.log(<span class="string">'a.html 接收到b.html的消息:'</span>, e.data);</div><div class="line">		&#125;,<span class="literal">false</span>);</div><div class="line">	&lt;<span class="regexp">/script&gt;</span></div><div class="line"><span class="regexp">&lt;/</span>body&gt;</div><div class="line">&lt;<span class="regexp">/html&gt;</span></div></pre></td></tr></table></figure></p>
 <p>接着创建子窗口：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">&lt;script&gt;</div><div class="line">	<span class="built_in">window</span>.addEventListener(<span class="string">'message'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</div><div class="line">        <span class="comment">//过滤不是父窗口发来的消息</span></div><div class="line">		<span class="keyword">if</span>(e.source != <span class="built_in">window</span>.parent) &#123;</div><div class="line">			<span class="keyword">return</span>;</div><div class="line">		&#125;</div><div class="line">        <span class="comment">//过滤不是发向本窗口的消息</span></div><div class="line">        <span class="keyword">if</span>(e.origin !== <span class="string">'http://localhost:8081'</span>) &#123;</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="comment">//获得父窗口数据</span></div><div class="line">		<span class="keyword">let</span> data = e.data;</div><div class="line">		<span class="built_in">console</span>.log(<span class="string">'b.html 接收到a.html的消息:'</span>, data);</div><div class="line">        <span class="comment">//给父窗口发送数据</span></div><div class="line">		parent.postMessage(<span class="string">'我已经接收到消息了!'</span>, e.origin);</div><div class="line">	&#125;);</div><div class="line">&lt;<span class="regexp">/script&gt;</span></div></pre></td></tr></table></figure></p>
 <p>message事件的对象event，提供以下三个属性：</p>
 <ul>
 <li>event.source：发送消息的窗口</li>
 <li>event.origin：消息发向的网址</li>
-<li>event.data：消息内容<br>结果：<br><img src="img/cross6.png" alt="window.postMessage实现跨域"></li>
+<li>event.data：消息内容<br>结果：<br><img src="/2018/03/28/浏览器同源策略/img/cross6.png" alt="window.postMessage实现跨域"></li>
 </ul>
 
       
@@ -250,7 +354,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2018/03/28/跨域的简易实现及测试/">展开全文 >></a>
+          <a class="article-more-a" href="/2018/03/28/浏览器同源策略/">展开全文 >></a>
         </p>
       
 
@@ -310,19 +414,19 @@
 <blockquote>
 <p>for (var i = 0;i &lt;10;i++) {<br>    //实现每隔一秒输出i<br>  }</p>
 </blockquote>
-<p><img src="img/wps1.png" alt="exe2"></p>
+<p><img src="/2018/03/27/WPS笔试/img/wps1.png" alt="exe2"></p>
 <p>3.</p>
 <blockquote>
 <font size="2">var f = function g() {<br>    return 23;<br>}<br>typeof g(); //运行结果是什么<br></font>
 
 </blockquote>
-<p><img src="img/wps2.png" alt="exe3"></p>
+<p><img src="/2018/03/27/WPS笔试/img/wps2.png" alt="exe3"></p>
 <p>4.</p>
 <blockquote>
 <font size="2"> function a(b) {<br>    switch (b) {<br>        case ‘A’:<br>            console.log(1);<br>            break;<br>        case ‘string’:<br>            console.log(2);<br>            break;<br>        case undefined:<br>            console.log(3);<br>            break;<br>        case ‘undefined’:<br>            console.log(4);<br>            break;<br>        default:<br>            console.log(5);<br>    }<br>}<br>a(typeof new Array(‘A’));//输出结果<br></font>
 
 </blockquote>
-<p><img src="img/wps3.png" alt="exe4"><br>利用Array构造函数创建的实例，是一个对象。</p>
+<p><img src="/2018/03/27/WPS笔试/img/wps3.png" alt="exe4"><br>利用Array构造函数创建的实例，是一个对象。</p>
 <p>5.</p>
 <blockquote>
 <p>用javascript实现map数据结构</p>
@@ -332,7 +436,7 @@
 <p>输入一个排好序的整数数组，输入一个给定的指定值，问数组中是否存在两个整数之和刚好等于指定值，有则输出true，时间复杂度最好是O(n)。<br>例：数组为[1,2,3,4,6,7,9]，指定值为12，刚好有3+9=12，输出true。</p>
 </blockquote>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*</span></div><div class="line"><span class="comment"> * 算出任意两数和，保存在sum_arr数组中</span></div><div class="line"><span class="comment"> * sum_arr去重</span></div><div class="line"><span class="comment"> * 在sum_arr中搜索指定值aim_sum，若找到则return true，否则return false</span></div><div class="line"><span class="comment">*/</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">findSum</span>(<span class="params">arr,aim_sum</span>) </span>&#123;</div><div class="line">    <span class="comment">//输入不是数组</span></div><div class="line">    <span class="comment">//if (!typeof arr == 'object' &amp;&amp; arr.prototype.constructor == 'Array') &#123;</span></div><div class="line">    <span class="comment">//    console.log('请输入整数数组');</span></div><div class="line">    <span class="comment">//    return false;</span></div><div class="line">    <span class="comment">//&#125;</span></div><div class="line">    <span class="comment">//输入为空</span></div><div class="line">    <span class="comment">//if (!arr.length) &#123;</span></div><div class="line">    <span class="comment">//    console.log('输入不能为空');</span></div><div class="line">    <span class="comment">//    return false;</span></div><div class="line">    <span class="comment">//&#125;</span></div><div class="line"></div><div class="line">    <span class="comment">//存放两数和</span></div><div class="line">    <span class="keyword">let</span> sum_arr = [];</div><div class="line"></div><div class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>;i &lt; arr.length;i++) &#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> j = i + <span class="number">1</span>;j &lt; arr.length;j++) &#123;</div><div class="line">            sum_arr.push(arr[i]+arr[j]);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//去重</span></div><div class="line">    sum_arr = [...new <span class="built_in">Set</span>(sum_arr)];</div><div class="line">    <span class="built_in">console</span>.log(sum_arr);</div><div class="line"></div><div class="line">    <span class="comment">//搜索</span></div><div class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>;i &lt; sum_arr.length;i++) &#123;</div><div class="line">        <span class="keyword">if</span> (sum_arr[i] === aim_sum) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">&#125;</div><div class="line">findSum([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">9</span>],<span class="number">2</span>);</div></pre></td></tr></table></figure>
-<p>现场想不到O(n)的解法，就把想到的写上去了，笔试完用浏览器运了一下才发现判断数组、判空那里都是bug，如下所示:<br><img src="img/wps4.png" alt="exe6"></p>
+<p>现场想不到O(n)的解法，就把想到的写上去了，笔试完用浏览器运了一下才发现判断数组、判空那里都是bug，如下所示:<br><img src="/2018/03/27/WPS笔试/img/wps4.png" alt="exe6"></p>
 <p>下面是O(n)解法的思路：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*</span></div><div class="line"><span class="comment"> * 先将数组从小到大排序</span></div><div class="line"><span class="comment"> * 左右指针分别指向最小值和最大值</span></div><div class="line"><span class="comment"> * 若左右指针所指两数之和等于指定值，return true</span></div><div class="line"><span class="comment"> * 若小于，则左指针右移一位，继续比较</span></div><div class="line"><span class="comment"> * 若大于，则右指针左移一位，继续比较</span></div><div class="line"><span class="comment"> * 若左右指针重合，return false</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">findSum</span>(<span class="params">arr,aim_sum</span>) </span>&#123;</div><div class="line">    <span class="comment">//对数组进行排序</span></div><div class="line">    arr = arr.sort();</div><div class="line"></div><div class="line">    <span class="comment">//左右指针</span></div><div class="line">    <span class="keyword">let</span> left = <span class="number">0</span>;</div><div class="line">    <span class="keyword">let</span> right = arr.length<span class="number">-1</span>;</div><div class="line"></div><div class="line">    <span class="keyword">while</span>(left &lt; right) &#123;</div><div class="line">        <span class="keyword">if</span> (arr[left] + arr[right] === aim_sum) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (arr[left] + arr[right] &lt; aim_sum) &#123;</div><div class="line">            left++;</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            right--;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">&#125;</div><div class="line">findSum([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">9</span>],<span class="number">2</span>);</div></pre></td></tr></table></figure></p>
 
       
@@ -415,7 +519,7 @@
 <p>优点：相较于工厂模式，可以将实例标识为一种特定的类型 (Person)<br>缺点：1.每个方法都要在每个实例上重新创建一遍<br>      2.sayName函数只是被某些对象调用，却写在全局作用域中</p>
 <p> 四、原型模式<br> <figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params"></span>) </span>&#123;&#125;</div><div class="line"></div><div class="line"><span class="comment">//重写对象原型</span></div><div class="line">Person.prototype = &#123; </div><div class="line">    <span class="keyword">constructor</span>: Person,//因为重写了对象原型，<span class="keyword">constructor</span>指向Object而不是Person，故重新设置回来</div><div class="line">    name: "Nicholas",</div><div class="line">    age: 29,</div><div class="line">    job: "Software Engineer",</div><div class="line">    friends: ["Shelby","Court"],</div><div class="line">    sayName: function() &#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</div><div class="line">    &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">var</span> person1 = <span class="keyword">new</span> Person();</div><div class="line"><span class="keyword">var</span> person2 = <span class="keyword">new</span> Person();</div><div class="line"></div><div class="line">person1.friends.push(<span class="string">"Van"</span>);</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(person1.friends); <span class="comment">//"Shelby,Court,Van"</span></div><div class="line"><span class="built_in">console</span>.log(person1.friends); <span class="comment">//"Shelby,Court,Van"</span></div><div class="line"><span class="built_in">console</span>.log(person1.friends === person2.friends); <span class="comment">//true</span></div></pre></td></tr></table></figure></p>
 <p> 优点：可以让所有实例共享原型的属性和方法<br> 缺点：若包含引用类型的属性(friends),当在person1中修改friends时在person2中也有所体现</p>
-<p> 原型链：红宝书P148 图6-1<br> <img src="img/prototype.jpg" alt="prototype"></p>
+<p> 原型链：红宝书P148 图6-1<br> <img src="/2018/03/20/创建对象的几种模式以及优缺点/img/prototype.jpg" alt="prototype"></p>
 <p> 五、组合使用构造函数模式和原型模式<br> 构造函数模式用于定义实例属性，原型模式用于定义共享的属性和方法。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name,age,job</span>) </span>&#123;</div><div class="line">    <span class="keyword">this</span>.name = name;</div><div class="line">    <span class="keyword">this</span>.age = age;</div><div class="line">    <span class="keyword">this</span>.job = job;</div><div class="line">    <span class="keyword">this</span>.friends = [<span class="string">"Shelby"</span>,<span class="string">"Court"</span>];</div><div class="line">&#125;</div><div class="line"></div><div class="line">Person.prototype = &#123;</div><div class="line">    <span class="keyword">constructor</span>: Person,</div><div class="line">    sayName: function() &#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> person1 = <span class="keyword">new</span> Person(<span class="string">"Nicholas"</span>,<span class="number">29</span>,<span class="string">"Software Engineer"</span>);</div><div class="line"><span class="keyword">var</span> person2 = <span class="keyword">new</span> Person(<span class="string">"Greg"</span>,<span class="number">27</span>,<span class="string">"Doctor"</span>);</div><div class="line"></div><div class="line">person1.friends.push(<span class="string">"Van"</span>);</div><div class="line"><span class="built_in">console</span>.log(person1.friends); <span class="comment">//"Shelby,Court,Van"</span></div><div class="line"><span class="built_in">console</span>.log(person2.friends); <span class="comment">//"Shelby,Court"</span></div><div class="line"><span class="built_in">console</span>.log(person1.friends === person2.friends); <span class="comment">//false</span></div><div class="line"><span class="built_in">console</span>.log(person1.sayName === person2.sayName); <span class="comment">//true</span></div></pre></td></tr></table></figure></p>
 <p>该种模式是目前在ECMAScript中使用最广泛、认同度最高的一种创建自定义类型的方法。</p>
 <p>六、动态原型模型<br>通过检查某个应该存在的方法是否有效，来决定是都需要初始化原型。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name,age,job</span>) </span>&#123;</div><div class="line">    <span class="comment">//属性</span></div><div class="line">    <span class="keyword">this</span>.name = name;</div><div class="line">    <span class="keyword">this</span>.age = age;</div><div class="line">    <span class="keyword">this</span>.job = job;</div><div class="line">    <span class="comment">//方法</span></div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="keyword">this</span>.sayName != <span class="string">"function"</span>) &#123;</div><div class="line">        <span class="comment">//注：此处不能使用对象字面量重写原型。如果在已经创建了实例的情况下重写原型，现有实例与新原型之间的联系会被切断</span></div><div class="line">        Person.prototype.sayName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">            <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> friend = <span class="keyword">new</span> Person(<span class="string">"Nicholas"</span>,<span class="number">29</span>,<span class="string">"Software Engineer"</span>);</div><div class="line">friend.sayName();</div></pre></td></tr></table></figure></p>
@@ -1001,97 +1105,6 @@
 
 
   
-    <article id="post-腾讯一面-dh" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/03/17/腾讯一面-dh/">腾讯一面(dh)</a>
-    </h1>
-  
-
-        
-        <a href="/2018/03/17/腾讯一面-dh/" class="archive-article-date">
-  	<time datetime="2018-03-17T11:49:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-17</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ol>
-<li>ES6几个问题，忘记录音了……</li>
-<li>箭头函数</li>
-<li>promise</li>
-<li>webpack打包机制，怎么配置</li>
-<li>webpack loader、plugin</li>
-<li>ES6箭头函数 与 普通函数 的区别</li>
-<li>数组去重，有什么注意点</li>
-<li>继承相关问题</li>
-<li>跨域CORS，jsonp，ifame跨域等</li>
-<li>nodeJS……问了几个，是什么都忘记了</li>
-<li>本地存储，容量大小</li>
-<li>排序，冒泡是稳定还是不稳定排序</li>
-<li>tcp三次握手原理</li>
-<li>flexible.js</li>
-<li>rem，手机淘宝移动端rem适配如何改的</li>
-<li>雪碧图如何合成</li>
-</ol>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">春招</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/03/17/腾讯一面-dh/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1193,15 +1206,11 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">跨域</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">春招 笔试</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">中升物业 总结 前端</a>
+                <a href="javascript:void(0)" class="js-tag color3">js</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1209,7 +1218,7 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">js</a>
+                <a href="javascript:void(0)" class="js-tag color1">中升物业 总结 前端</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1218,6 +1227,10 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">js 对象</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">跨域</a>
               </li>
             
             <div class="clearfix"></div>

@@ -184,19 +184,19 @@
 <blockquote>
 <p>for (var i = 0;i &lt;10;i++) {<br>    //实现每隔一秒输出i<br>  }</p>
 </blockquote>
-<p><img src="img/wps1.png" alt="exe2"></p>
+<p><img src="/2018/03/27/WPS笔试/img/wps1.png" alt="exe2"></p>
 <p>3.</p>
 <blockquote>
 <font size="2">var f = function g() {<br>    return 23;<br>}<br>typeof g(); //运行结果是什么<br></font>
 
 </blockquote>
-<p><img src="img/wps2.png" alt="exe3"></p>
+<p><img src="/2018/03/27/WPS笔试/img/wps2.png" alt="exe3"></p>
 <p>4.</p>
 <blockquote>
 <font size="2"> function a(b) {<br>    switch (b) {<br>        case ‘A’:<br>            console.log(1);<br>            break;<br>        case ‘string’:<br>            console.log(2);<br>            break;<br>        case undefined:<br>            console.log(3);<br>            break;<br>        case ‘undefined’:<br>            console.log(4);<br>            break;<br>        default:<br>            console.log(5);<br>    }<br>}<br>a(typeof new Array(‘A’));//输出结果<br></font>
 
 </blockquote>
-<p><img src="img/wps3.png" alt="exe4"><br>利用Array构造函数创建的实例，是一个对象。</p>
+<p><img src="/2018/03/27/WPS笔试/img/wps3.png" alt="exe4"><br>利用Array构造函数创建的实例，是一个对象。</p>
 <p>5.</p>
 <blockquote>
 <p>用javascript实现map数据结构</p>
@@ -206,7 +206,7 @@
 <p>输入一个排好序的整数数组，输入一个给定的指定值，问数组中是否存在两个整数之和刚好等于指定值，有则输出true，时间复杂度最好是O(n)。<br>例：数组为[1,2,3,4,6,7,9]，指定值为12，刚好有3+9=12，输出true。</p>
 </blockquote>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*</span></div><div class="line"><span class="comment"> * 算出任意两数和，保存在sum_arr数组中</span></div><div class="line"><span class="comment"> * sum_arr去重</span></div><div class="line"><span class="comment"> * 在sum_arr中搜索指定值aim_sum，若找到则return true，否则return false</span></div><div class="line"><span class="comment">*/</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">findSum</span>(<span class="params">arr,aim_sum</span>) </span>&#123;</div><div class="line">    <span class="comment">//输入不是数组</span></div><div class="line">    <span class="comment">//if (!typeof arr == 'object' &amp;&amp; arr.prototype.constructor == 'Array') &#123;</span></div><div class="line">    <span class="comment">//    console.log('请输入整数数组');</span></div><div class="line">    <span class="comment">//    return false;</span></div><div class="line">    <span class="comment">//&#125;</span></div><div class="line">    <span class="comment">//输入为空</span></div><div class="line">    <span class="comment">//if (!arr.length) &#123;</span></div><div class="line">    <span class="comment">//    console.log('输入不能为空');</span></div><div class="line">    <span class="comment">//    return false;</span></div><div class="line">    <span class="comment">//&#125;</span></div><div class="line"></div><div class="line">    <span class="comment">//存放两数和</span></div><div class="line">    <span class="keyword">let</span> sum_arr = [];</div><div class="line"></div><div class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>;i &lt; arr.length;i++) &#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> j = i + <span class="number">1</span>;j &lt; arr.length;j++) &#123;</div><div class="line">            sum_arr.push(arr[i]+arr[j]);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//去重</span></div><div class="line">    sum_arr = [...new <span class="built_in">Set</span>(sum_arr)];</div><div class="line">    <span class="built_in">console</span>.log(sum_arr);</div><div class="line"></div><div class="line">    <span class="comment">//搜索</span></div><div class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>;i &lt; sum_arr.length;i++) &#123;</div><div class="line">        <span class="keyword">if</span> (sum_arr[i] === aim_sum) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">&#125;</div><div class="line">findSum([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">9</span>],<span class="number">2</span>);</div></pre></td></tr></table></figure>
-<p>现场想不到O(n)的解法，就把想到的写上去了，笔试完用浏览器运了一下才发现判断数组、判空那里都是bug，如下所示:<br><img src="img/wps4.png" alt="exe6"></p>
+<p>现场想不到O(n)的解法，就把想到的写上去了，笔试完用浏览器运了一下才发现判断数组、判空那里都是bug，如下所示:<br><img src="/2018/03/27/WPS笔试/img/wps4.png" alt="exe6"></p>
 <p>下面是O(n)解法的思路：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*</span></div><div class="line"><span class="comment"> * 先将数组从小到大排序</span></div><div class="line"><span class="comment"> * 左右指针分别指向最小值和最大值</span></div><div class="line"><span class="comment"> * 若左右指针所指两数之和等于指定值，return true</span></div><div class="line"><span class="comment"> * 若小于，则左指针右移一位，继续比较</span></div><div class="line"><span class="comment"> * 若大于，则右指针左移一位，继续比较</span></div><div class="line"><span class="comment"> * 若左右指针重合，return false</span></div><div class="line"><span class="comment"> */</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">findSum</span>(<span class="params">arr,aim_sum</span>) </span>&#123;</div><div class="line">    <span class="comment">//对数组进行排序</span></div><div class="line">    arr = arr.sort();</div><div class="line"></div><div class="line">    <span class="comment">//左右指针</span></div><div class="line">    <span class="keyword">let</span> left = <span class="number">0</span>;</div><div class="line">    <span class="keyword">let</span> right = arr.length<span class="number">-1</span>;</div><div class="line"></div><div class="line">    <span class="keyword">while</span>(left &lt; right) &#123;</div><div class="line">        <span class="keyword">if</span> (arr[left] + arr[right] === aim_sum) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (arr[left] + arr[right] &lt; aim_sum) &#123;</div><div class="line">            left++;</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            right--;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">&#125;</div><div class="line">findSum([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">9</span>],<span class="number">2</span>);</div></pre></td></tr></table></figure></p>
 
       
@@ -291,7 +291,7 @@
   
 <nav id="article-nav">
   
-    <a href="/2018/03/28/跨域的简易实现及测试/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2018/03/28/浏览器同源策略/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
@@ -432,15 +432,11 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">跨域</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">春招 笔试</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">中升物业 总结 前端</a>
+                <a href="javascript:void(0)" class="js-tag color3">js</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -448,7 +444,7 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">js</a>
+                <a href="javascript:void(0)" class="js-tag color1">中升物业 总结 前端</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -457,6 +453,10 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">js 对象</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">跨域</a>
               </li>
             
             <div class="clearfix"></div>
