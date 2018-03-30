@@ -16,14 +16,14 @@
 <meta property="og:site_name" content="Hinsurance">
 <meta property="og:description" content="3.7的时候拜托了小伙伴在腾讯的师兄内推，在lz等了几天以为简历筛选阶段挂掉的时候，收到了腾讯的短信询问当天下午是否有空面试。必须有呀，只是一下子高度紧张起来，感觉高考都没这么紧张过。于是乎硬着头皮又复习了一些知识点。接到电话的时候太紧张了忘记录音，只能凭着印象记下一些点。  1.自我介绍  lz简单介绍了姓名、学校、专业、面试岗位这些基本的信息以后就不知道说什么好了。其实可以说说做了一些什么项目">
 <meta property="og:locale" content="zh">
-<meta property="og:image" content="http://hinsurance.github.io/2018/03/15/2018-3-14腾讯前端一面总结/img/t3.png">
-<meta property="og:image" content="http://hinsurance.github.io/2018/03/15/2018-3-14腾讯前端一面总结/img/t1.png">
-<meta property="og:image" content="http://hinsurance.github.io/2018/03/15/2018-3-14腾讯前端一面总结/img/t2.png">
-<meta property="og:updated_time" content="2018-03-17T13:07:35.154Z">
+<meta property="og:image" content="http://oum84thym.bkt.clouddn.com/t3.png">
+<meta property="og:image" content="http://oum84thym.bkt.clouddn.com/t1.png">
+<meta property="og:image" content="http://oum84thym.bkt.clouddn.com/t2.png">
+<meta property="og:updated_time" content="2018-03-30T09:50:40.426Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="2018-3-14腾讯前端一面总结(bx)">
 <meta name="twitter:description" content="3.7的时候拜托了小伙伴在腾讯的师兄内推，在lz等了几天以为简历筛选阶段挂掉的时候，收到了腾讯的短信询问当天下午是否有空面试。必须有呀，只是一下子高度紧张起来，感觉高考都没这么紧张过。于是乎硬着头皮又复习了一些知识点。接到电话的时候太紧张了忘记录音，只能凭着印象记下一些点。  1.自我介绍  lz简单介绍了姓名、学校、专业、面试岗位这些基本的信息以后就不知道说什么好了。其实可以说说做了一些什么项目">
-<meta name="twitter:image" content="http://hinsurance.github.io/2018/03/15/2018-3-14腾讯前端一面总结/img/t3.png">
+<meta name="twitter:image" content="http://oum84thym.bkt.clouddn.com/t3.png">
   
     <link rel="alternative" href="/atom.xml" title="Hinsurance" type="application/atom+xml">
   
@@ -222,7 +222,7 @@
 <blockquote>
 <p>12.求两个数的最大公约数、为什么可以用这种方法（原理）</p>
 </blockquote>
-<p>方法：<a href="https://baike.baidu.com/item/%E8%BE%97%E8%BD%AC%E7%9B%B8%E9%99%A4%E6%B3%95/4625352?fr=aladdin" target="_blank" rel="external">辗转相除法</a><br>基本原理：两个数的最大公约数是指能同时整除它们的最大正整数<br><img src="/2018/03/15/2018-3-14腾讯前端一面总结/img/t3.png" alt="principle"><br>例子：<br><img src="/2018/03/15/2018-3-14腾讯前端一面总结/img/t1.png" alt="demo"><br>证明：<br><img src="/2018/03/15/2018-3-14腾讯前端一面总结/img/t2.png" alt="prove"></p>
+<p>方法：<a href="https://baike.baidu.com/item/%E8%BE%97%E8%BD%AC%E7%9B%B8%E9%99%A4%E6%B3%95/4625352?fr=aladdin" target="_blank" rel="external">辗转相除法</a><br>基本原理：两个数的最大公约数是指能同时整除它们的最大正整数<br><img src="http://oum84thym.bkt.clouddn.com/t3.png" alt="principle"><br>例子：<br><img src="http://oum84thym.bkt.clouddn.com/t1.png" alt="demo"><br>证明：<br><img src="http://oum84thym.bkt.clouddn.com/t2.png" alt="prove"></p>
 <p>js实现：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">gcd</span>(<span class="params">a,b</span>) </span>&#123;</div><div class="line">	<span class="keyword">if</span> (a &lt;= <span class="number">0</span> ||b &lt;= <span class="number">0</span>) &#123;</div><div class="line">		<span class="keyword">return</span> <span class="string">'请输入正整数'</span>;</div><div class="line">	&#125; <span class="keyword">else</span> &#123;</div><div class="line">		<span class="keyword">if</span> (a &lt; b) &#123;</div><div class="line">			[a,b] = [b,a];</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">const</span> r = a % b;</div><div class="line">		<span class="keyword">if</span> (r) &#123;</div><div class="line">			a = b;</div><div class="line">			b = r;</div><div class="line">			gcd(a,b); </div><div class="line">		&#125; <span class="keyword">else</span> &#123;</div><div class="line">			<span class="keyword">return</span> b;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <blockquote>
 <p>13.git rebase和git merge的区别</p>
